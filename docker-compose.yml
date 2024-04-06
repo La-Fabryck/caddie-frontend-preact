@@ -1,0 +1,17 @@
+services:
+  frontend:
+    image: node:21-alpine
+    restart: unless-stopped
+    volumes:
+      - '.:/app'
+    ports:
+      - '5173:5173'
+    command: ['npm', 'run', 'dev']
+    working_dir: /app
+    networks:
+      - caddie_network
+
+networks:
+  caddie_network:
+    external: true
+      #name: caddie_network
