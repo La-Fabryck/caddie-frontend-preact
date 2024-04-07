@@ -1,7 +1,18 @@
+import { useEffect } from 'preact/hooks';
 import preactLogo from '../../assets/preact.svg';
 import './style.css';
 
 export function Home() {
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(`/api/users`);
+      const newData = await response.text();
+      console.log(newData);
+    };
+
+    fetchData();
+  });
+
   return (
     <div class="home">
       <a href="https://preactjs.com" target="_blank" rel="noreferrer">
