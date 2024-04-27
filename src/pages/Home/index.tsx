@@ -1,50 +1,21 @@
-import { useEffect } from 'preact/hooks';
 import preactLogo from '../../assets/preact.svg';
+import { useFetch } from '@/hooks';
+import type { List } from '@/responses';
 import './style.css';
 
 export function Home() {
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(`/api/users`);
-      const newData = await response.text();
-      console.log(newData);
-    };
-
-    fetchData();
+  const { data: lists, isLoading } = useFetch<List[]>({
+    url: '/api/list',
+    options: { key: 'lists' },
   });
 
   return (
     <div class="home">
+      <p>{isLoading ? 'Loading...' : JSON.stringify(lists, null, 4)}</p>
       <a href="https://preactjs.com" target="_blank" rel="noreferrer">
         <img src={preactLogo} alt="Preact logo" height="160" width="160" />
       </a>
       <h1>Get Started building Vite-powered Preact Apps </h1>
-      <section>
-        <Resource
-          title="Learn Preact"
-          description="If you're new to Preact, try the interactive tutorial to learn important concepts"
-          href="https://preactjs.com/tutorial"
-        />
-        <Resource
-          title="Differences to React"
-          description="If you're coming from React, you may want to check out our docs to see where Preact differs"
-          href="https://preactjs.com/guide/v10/differences-to-react"
-        />
-        <Resource
-          title="Learn Vite"
-          description="To learn more about Vite and how you can customize it to fit your needs, take a look at their excellent documentation"
-          href="https://vitejs.dev"
-        />
-      </section>
     </div>
-  );
-}
-
-function Resource(props) {
-  return (
-    <a href={props.href} target="_blank" class="resource" rel="noreferrer">
-      <h2>{props.title}</h2>
-      <p>{props.description}</p>
-    </a>
   );
 }

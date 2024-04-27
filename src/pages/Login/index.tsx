@@ -1,14 +1,18 @@
 import { type FC } from 'preact/compat';
 import { useForm } from 'react-hook-form';
-import { useFetch } from '../../hooks/useFetch';
+import { useFetch } from '@/hooks';
 
-type LoginHandlerProps = {
+type Credentials = {
   email: string;
   password: string;
 };
 
-export const Login: FC = () => {
-  const { handleSubmit, formState, register } = useForm<LoginHandlerProps>();
+type LoginProps = {
+  onSuccessCallback: () => void;
+};
+
+export const Login: FC<LoginProps> = ({ onSuccessCallback }) => {
+  const { handleSubmit, formState, register } = useForm<Credentials>();
   const { handleRequest, isLoading, data, error } = useFetch({
     url: '/api/authentication/login',
     init: {
@@ -18,6 +22,7 @@ export const Login: FC = () => {
       },
     },
     options: { key: 'user' },
+    onSuccessCallback,
   });
 
   return (
