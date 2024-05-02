@@ -7,7 +7,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint/eslint-plugin', 'import'],
   extends: [
-    'preact',
+    'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'plugin:import/errors',
@@ -21,11 +21,12 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.cjs'],
   rules: {
-    'jest/no-deprecated-functions': 'off',
+    'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-explicit-any': 'error',
     'sort-imports': [
       'error',
       {
@@ -37,9 +38,20 @@ module.exports = {
       [
         'error',
         {
-          'groups': ['builtin', 'external', 'parent', 'sibling', 'index']
+          'groups': ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+          'pathGroups': [
+            {
+              'pattern': '@/**',
+              'group': 'internal'
+            }
+          ],
+          'alphabetize': {
+            'order': 'asc',
+            'caseInsensitive': true,
+          }
         }
-      ]
+      ],
+    'yoda': ['error', 'never'],
   },
   'settings': {
     'import/parsers': {

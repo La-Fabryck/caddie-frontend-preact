@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
 import preact from '@preact/preset-vite';
+import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
@@ -19,11 +19,7 @@ export default defineConfig({
             console.log('Sending Request to the Target:', req.method, req.url);
           });
           proxy.on('proxyRes', (proxyRes, req) => {
-            console.log(
-              'Received Response from the Target:',
-              proxyRes.statusCode,
-              req.url,
-            );
+            console.log('Received Response from the Target:', proxyRes.statusCode, req.url);
           });
         },
       },

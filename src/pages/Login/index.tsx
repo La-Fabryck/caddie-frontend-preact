@@ -34,26 +34,12 @@ export const Login: FC<LoginProps> = ({ onSuccessCallback }) => {
       <br />
       <form onSubmit={handleSubmit(handleRequest)}>
         <label for="email">Email</label>
-        {formState.errors.email?.type === 'required' && (
-          <p role="alert">Email is required</p>
-        )}
-        <input
-          id="email"
-          name="email"
-          type="email"
-          {...register('email', { required: true })}
-        />
+        {formState.errors.email?.type === 'required' && <p role="alert">Email is required</p>}
+        <input id="email" name="email" type="email" {...register('email', { required: true })} />
         <br />
         <label for="password">Password</label>
-        {formState.errors.password?.type === 'required' && (
-          <p role="alert">Password is required</p>
-        )}
-        <input
-          id="password"
-          name="password"
-          type="password"
-          {...register('password', { required: false })}
-        />
+        {formState.errors.password?.type === 'required' && <p role="alert">Password is required</p>}
+        <input id="password" name="password" type="password" {...register('password', { required: false })} />
         <br />
         <input type="submit" />
       </form>

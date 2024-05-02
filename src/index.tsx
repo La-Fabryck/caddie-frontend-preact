@@ -1,10 +1,10 @@
 import { render } from 'preact';
 import { LocationProvider, Route, Router } from 'preact-iso';
-import { CacheProvider } from './hooks';
 import { Header, ProtectedRoute } from './components';
-import { Login } from './pages/Login';
-import { Home } from './pages/Home';
+import { CacheProvider } from './hooks';
 import { NotFound } from './pages/_404.jsx';
+import { Home } from './pages/Home';
+import { Login } from './pages/Login';
 import './style.css';
 
 export function App() {

@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import { useCache } from './useCache';
 
-type HTTPMethods =
-  | 'CONNECT'
-  | 'DELETE'
-  | 'GET'
-  | 'HEAD'
-  | 'OPTIONS'
-  | 'PATCH'
-  | 'POST'
-  | 'PUT'
-  | 'TRACE';
+type HTTPMethods = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE';
 type RequestOptions = Omit<RequestInit, 'method'> & { method: HTTPMethods };
 
 type FetchConfig = {
@@ -30,12 +21,7 @@ function shouldUseCache(method: HTTPMethods = 'GET') {
   return method === 'GET';
 }
 
-export function useFetch<T>({
-  url,
-  init,
-  options: { noCache = false, ttl = TTL_DEFAULT, key },
-  onSuccessCallback,
-}: FetchConfig) {
+export function useFetch<T>({ url, init, options: { noCache = false, ttl = TTL_DEFAULT, key }, onSuccessCallback }: FetchConfig) {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<Awaited<Promise<T>>>(null);
   const [error, setError] = useState(null);
@@ -58,9 +44,7 @@ export function useFetch<T>({
     });
 
     //if the content is null, it fails when using response.json()
-    const hasJsonContent = Boolean(
-      parseInt(response.headers.get('content-length'), 10),
-    );
+    const hasJsonContent = Boolean(parseInt(response.headers.get('content-length'), 10));
 
     const content = hasJsonContent ? await response.json() : null;
 

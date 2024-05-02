@@ -65,9 +65,5 @@ export function CacheProvider<T>({ children }: { children: ReactNode }) {
     deleteCache,
   };
 
-  return (
-    <CacheContext.Provider value={contextValue}>
-      {children}
-    </CacheContext.Provider>
-  );
+  return <CacheContext.Provider value={contextValue}>{children}</CacheContext.Provider>;
 }

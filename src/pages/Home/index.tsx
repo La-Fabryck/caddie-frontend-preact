@@ -1,6 +1,6 @@
-import preactLogo from '../../assets/preact.svg';
 import { useFetch } from '@/hooks';
 import type { List } from '@/responses';
+import preactLogo from '../../assets/preact.svg';
 import './style.css';
 
 export function Home() {
