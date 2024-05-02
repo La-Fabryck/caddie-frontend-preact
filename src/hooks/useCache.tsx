@@ -1,29 +1,30 @@
-import { createContext } from 'preact';
+import { createContext, type JSX } from 'preact';
 import { useContext } from 'preact/hooks';
 import { ReactNode } from 'react';
 
-type ContextType = {
-  getCache: (key: string) => any;
-  setCache: (key: string, value: any, ttl?: number) => void;
+type ContextType<T> = {
+  getCache: (key: string) => T | null;
+  setCache: (key: string, value: T, ttl?: number) => void;
   clearCache: () => void;
   deleteCache: (key: string) => void;
 };
 
-type cacheBody<T = unknown> = {
+type CacheEntry<T> = {
   expiry: Date;
   data: T;
 };
 
-const CacheContext = createContext<ContextType>(null);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const CacheContext = createContext(null as any);
 
-export function useCache() {
+export function useCache<T>(): ContextType<T> {
   return useContext(CacheContext);
 }
 
-export function CacheProvider<T>({ children }: { children: ReactNode }) {
-  const map = new Map<string, cacheBody<T>>();
+export function CacheProvider<T>({ children }: { children: ReactNode }): JSX.Element {
+  const map = new Map<string, CacheEntry<T>>();
 
-  function getCache(key: string) {
+  function getCache(key: string): T | null {
     const cacheValue = map.get(key);
     if (!cacheValue) {
       return null;
@@ -37,7 +38,7 @@ export function CacheProvider<T>({ children }: { children: ReactNode }) {
     return cacheValue.data;
   }
 
-  function setCache(key: string, value: T, ttl: number = 10) {
+  function setCache(key: string, value: T, ttl: number = 10): void {
     if (value == null) {
       return;
     }
@@ -50,11 +51,11 @@ export function CacheProvider<T>({ children }: { children: ReactNode }) {
     });
   }
 
-  function clearCache() {
+  function clearCache(): void {
     map.clear();
   }
 
-  function deleteCache(key: string) {
+  function deleteCache(key: string): void {
     map.delete(key);
   }
 

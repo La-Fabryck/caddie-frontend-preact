@@ -1,18 +1,19 @@
+import type { JSX } from 'preact/jsx-runtime';
 import { useLocation } from 'preact-iso';
 
-export function Header() {
+export function Header(): JSX.Element {
   const { url } = useLocation();
 
   return (
     <header>
       <nav>
-        <a href="/" class={url == '/' && 'active'}>
+        <a href="/" className={url == '/' ? 'active' : undefined}>
           Home
         </a>
-        <a href="/login" class={url == '/login' && 'active'}>
+        <a href="/login" className={url == '/login' ? 'active' : undefined}>
           Login
         </a>
-        <a href="/404" class={url == '/404' && 'active'}>
+        <a href="/404" className={url == '/404' ? 'active' : undefined}>
           404
         </a>
       </nav>

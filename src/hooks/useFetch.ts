@@ -12,20 +12,35 @@ type FetchConfig = {
     ttl?: number;
     key: string;
   };
+  /*
+   * Perform side effect actions. To be used with mutation (patch, post, put, etc).
+   * Redirection, state update, etc, to be performed here
+   */
   onSuccessCallback?: () => void;
 };
 
 const TTL_DEFAULT = 5 * 60 * 1000;
 
-function shouldUseCache(method: HTTPMethods = 'GET') {
+/**
+ * Verify if the mehod is a mutation or not. Same behaviour as the fetch, default is GET
+ */
+function isMutation(method: HTTPMethods = 'GET'): boolean {
   return method === 'GET';
 }
 
-export function useFetch<T>({ url, init, options: { noCache = false, ttl = TTL_DEFAULT, key }, onSuccessCallback }: FetchConfig) {
+/**
+ * Custom hook intended to work similarly as useQuery but less bloated. One hook for both
+ */
+export function useFetch<T, U = unknown>({
+  url,
+  init,
+  options: { noCache = false, ttl = TTL_DEFAULT, key },
+  onSuccessCallback,
+}: FetchConfig) {
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<Awaited<Promise<T>>>(null);
-  const [error, setError] = useState(null);
-  const { getCache, setCache, deleteCache } = useCache();
+  const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState<U | null>(null);
+  const { getCache, setCache, deleteCache } = useCache<T>();
 
   const handleRequest = async (body?: T): Promise<void> => {
     if (!noCache && getCache(key) != null) {
@@ -40,11 +55,11 @@ export function useFetch<T>({ url, init, options: { noCache = false, ttl = TTL_D
 
     const response = await fetch(url, {
       ...init,
-      body: JSON.stringify(body),
+      body: isMutation(init?.method) ? JSON.stringify(body) : null,
     });
 
     //if the content is null, it fails when using response.json()
-    const hasJsonContent = Boolean(parseInt(response.headers.get('content-length'), 10));
+    const hasJsonContent = Boolean(parseInt(response.headers.get('content-length') ?? '0', 10));
 
     const content = hasJsonContent ? await response.json() : null;
 
@@ -69,7 +84,7 @@ export function useFetch<T>({ url, init, options: { noCache = false, ttl = TTL_D
   }
 
   useEffect(() => {
-    if (shouldUseCache(init?.method)) {
+    if (isMutation(init?.method)) {
       handleRequest();
     }
   });
