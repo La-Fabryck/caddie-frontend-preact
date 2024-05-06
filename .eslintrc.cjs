@@ -21,8 +21,10 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.cjs'],
   rules: {
+    //react specifics
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
+    // default config starts here
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
