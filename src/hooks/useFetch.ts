@@ -22,10 +22,12 @@ type FetchConfig = {
 const TTL_DEFAULT = 5 * 60 * 1000;
 
 /**
- * Verify if the mehod is a mutation or not. Same behaviour as the fetch, default is GET
+ * Verify if the mehod is safe or not. Same behaviour as the fetch, default is GET.
+ *
+ * https://developer.mozilla.org/en-US/docs/Glossary/Safe/HTTP
  */
-function isMutation(method: HTTPMethods = 'GET'): boolean {
-  return method === 'GET';
+function isSafeMethod(method: HTTPMethods = 'GET'): boolean {
+  return ['GET', 'HEAD', 'OPTIONS'].includes(method);
 }
 
 /**
@@ -42,7 +44,7 @@ export function useFetch<T, U = unknown>({
   const [error, setError] = useState<U | null>(null);
   const { getCache, setCache, deleteCache } = useCache<T>();
 
-  const handleRequest = async (body?: T): Promise<void> => {
+  async function handleRequest(body?: T): Promise<void> {
     if (!noCache && getCache(key) != null) {
       setData(getCache(key));
       setIsLoading(false);
@@ -55,7 +57,7 @@ export function useFetch<T, U = unknown>({
 
     const response = await fetch(url, {
       ...init,
-      body: isMutation(init?.method) ? JSON.stringify(body) : null,
+      body: !isSafeMethod(init?.method) ? JSON.stringify(body) : null,
     });
 
     //if the content is null, it fails when using response.json()
@@ -77,14 +79,14 @@ export function useFetch<T, U = unknown>({
       setIsLoading(false);
       setData(null);
     }
-  };
+  }
 
   function inValidate(key: FetchConfig['options']['key']) {
     deleteCache(key);
   }
 
   useEffect(() => {
-    if (isMutation(init?.method)) {
+    if (isSafeMethod(init?.method)) {
       handleRequest();
     }
   });

@@ -43,10 +43,8 @@ export function CacheProvider<T>({ children }: { children: ReactNode }): JSX.Ele
       return;
     }
 
-    const t = new Date();
-    t.setSeconds(t.getSeconds() + ttl);
     map.set(key, {
-      expiry: t,
+      expiry: new Date(new Date().getTime() + ttl),
       data: value,
     });
   }
