@@ -17,7 +17,8 @@
 			"react": ["./node_modules/preact/compat/"],
 			"react-dom": ["./node_modules/preact/compat/"],
 			"@/*": ["src/*"]
-		}
+		},
+		"types": ["node"]
 	},
-	"include": ["node_modules/vite/client.d.ts", "**/*"]
+	"include": ["node_modules/vite/client.d.ts", "**/*", "eslint.config.mjs"]
 }
