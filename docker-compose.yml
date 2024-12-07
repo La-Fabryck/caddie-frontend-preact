@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: node:22-alpine
+    image: node:23-alpine
     restart: unless-stopped
     volumes:
       - '.:/app'
