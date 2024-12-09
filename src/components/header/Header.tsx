@@ -1,5 +1,6 @@
 import type { JSX } from 'preact/jsx-runtime';
 import { useLocation } from 'preact-iso';
+import './Header.css';
 
 export function Header(): JSX.Element {
   const { url } = useLocation();

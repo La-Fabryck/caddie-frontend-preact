@@ -1,16 +1,17 @@
-import path from 'node:path';
+import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import typescriptEslintEslintPlugin from '@typescript-eslint/eslint-plugin';
+// eslint-disable-next-line import/default
 import tsParser from '@typescript-eslint/parser';
-// @ts-ignore types not shipped
+// @ts-expect-error types not shipped
 import _import from 'eslint-plugin-import';
 import globals from 'globals';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
 const compat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: js.configs.recommended,

@@ -3,7 +3,7 @@ import { LocationProvider, Route, Router } from 'preact-iso';
 import { Header, ProtectedRoute } from './components';
 import { CacheProvider } from './hooks';
 import { Home, Login, NotFound, ShoppingList } from './pages';
-import './style.css';
+import './index.css';
 
 export function App() {
   return (

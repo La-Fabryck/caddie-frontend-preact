@@ -8,6 +8,9 @@
 		"checkJs": true,
 		"strict": true,
 
+		"isolatedModules": true,
+		"allowSyntheticDefaultImports": true,
+
 		/* Preact Config */
 		"jsx": "react-jsx",
 		"jsxImportSource": "preact",
@@ -20,5 +23,12 @@
 		},
 		"types": ["node"]
 	},
-	"include": ["node_modules/vite/client.d.ts", "**/*", "eslint.config.mjs"]
+	"include": [
+		"node_modules/vite/client.d.ts",
+		"vite.config.ts",
+		"**/*", 
+		"eslint.config.mjs",
+		"tailwind.config.mjs",
+		"postcss.config.mjs"
+	]
 }
