@@ -31,7 +31,7 @@ export default {
         mauve: '#c6a0f6',
         pink: '#f5bde6',
         flamingo: '#f0c6c6',
-        rose: '#f4dbd6',
+        rosewater: '#f4dbd6',
       },
     },
   },

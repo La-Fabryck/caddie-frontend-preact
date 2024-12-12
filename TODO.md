@@ -8,6 +8,7 @@
 - TailWind CSS not ugly
 - [Signals](https://preactjs.com/guide/v10/signals/)
 - List with 2 buttons, V and X, V is found / ok, X is put in a list with all missing items.
+- Log out (clear cache etc)
 
 # v1.1 Nicer things
 
