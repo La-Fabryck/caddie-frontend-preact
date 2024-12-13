@@ -4,18 +4,29 @@ import { useLocation } from 'preact-iso';
 export function Header(): JSX.Element {
   const { url } = useLocation();
 
+  const links = [
+    {
+      route: '/',
+      text: 'Home',
+    },
+    {
+      route: '/login',
+      text: 'Login',
+    },
+    {
+      route: '/404',
+      text: '404',
+    },
+  ];
+
   return (
-    <header>
-      <nav>
-        <a href="/" className={url == '/' ? 'active' : undefined}>
-          Home
-        </a>
-        <a href="/login" className={url == '/login' ? 'active' : undefined}>
-          Login
-        </a>
-        <a href="/404" className={url == '/404' ? 'active' : undefined}>
-          404
-        </a>
+    <header className="flex justify-end bg-crust">
+      <nav className="flex">
+        {links.map((l) => (
+          <a key={l.route} href={l.route} className={url === l.route ? 'bg-mantle p-3' : 'hover:bg-mantle p-3'}>
+            {l.text}
+          </a>
+        ))}
       </nav>
     </header>
   );

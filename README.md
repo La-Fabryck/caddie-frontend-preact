@@ -12,14 +12,26 @@ docker network create caddie_network
 docker compose pull
 ```
 
-3. Start the app
+3. Install npm dependencies
+   
+```bash
+docker compose run --rm frontend npm ci
+```
+
+4. Start the app
 
 ```bash
 docker compose up
 ```
 
-4. Check the node version
+5. Check the node version
 
 ``` bash
 docker compose exec frontend node -v
+```
+
+6. Install npm package
+
+```bash
+docker compose run --rm frontend npm install <package>
 ```
