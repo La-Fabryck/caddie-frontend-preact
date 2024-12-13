@@ -5,7 +5,7 @@ import type { List } from '@/responses';
 
 function printLists(lists: List[]): JSX.Element {
   return (
-    <ul role="list">
+    <ul>
       {lists.map((l) => (
         <li key={l.id}>
           <a href={`/list/${l.id}`} className="flex justify-between gap-x-6 p-5 my-2 bg-surface0 hover:bg-surface1">
@@ -44,7 +44,7 @@ export const Home: FC = () => {
     url: '/api/list',
     options: { key: 'lists' },
   });
-  console.log(lists);
+
   return (
     <div className="py-5">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
