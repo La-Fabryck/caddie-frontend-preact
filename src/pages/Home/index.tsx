@@ -1,5 +1,5 @@
 import { type FC, type JSX } from 'preact/compat';
-import { Button } from '@/components/Button';
+import { Button } from '@/components';
 import { useFetch } from '@/hooks';
 import { type List } from '@/responses';
 
