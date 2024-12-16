@@ -1,8 +1,10 @@
+import type { JSX } from 'preact/jsx-runtime';
+
 interface ButtonProps {
   text: string;
 }
 
-export const Button = ({ text }: ButtonProps) => {
+export function Button({ text }: ButtonProps): JSX.Element {
   return (
     <button
       type="button"
@@ -11,4 +13,4 @@ export const Button = ({ text }: ButtonProps) => {
       {text}
     </button>
   );
-};
+}
