@@ -82,15 +82,7 @@ export default [
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'error',
-
-      'sort-imports': [
-        'error',
-        {
-          ignoreCase: true,
-          ignoreDeclarationSort: true,
-        },
-      ],
-
+      eqeqeq: ['error', 'always', { null: 'ignore' }],
       'import/order': [
         'error',
         {
@@ -109,7 +101,13 @@ export default [
           },
         },
       ],
-
+      'sort-imports': [
+        'error',
+        {
+          ignoreCase: true,
+          ignoreDeclarationSort: true,
+        },
+      ],
       yoda: ['error', 'never'],
     },
   },
