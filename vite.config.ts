@@ -7,6 +7,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 export default defineConfig({
   plugins: [preact(), tsconfigPaths()],
   server: {
+    host: '0.0.0.0',
     proxy: {
       '/api': {
         target: 'http://backend:3001',
