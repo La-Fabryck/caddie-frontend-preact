@@ -4,6 +4,7 @@ import { useCache } from './useCache';
 type HTTPMethods = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE';
 type RequestOptions = Omit<RequestInit, 'method'> & { method: HTTPMethods };
 
+//TODO: instead of init, a helper method, just pass the HTTP Method and it initiates on its own
 type FetchConfig = {
   url: RequestInfo;
   init?: RequestOptions;
@@ -33,18 +34,18 @@ function isSafeMethod(method: HTTPMethods = 'GET'): boolean {
 /**
  * Custom hook intended to work similarly as useQuery but less bloated. One hook for both
  */
-export function useFetch<T, U = unknown>({
+export function useFetch<TResponse = unknown, UError = unknown, VBody = unknown>({
   url,
   init,
   options: { noCache = false, ttl = TTL_DEFAULT, key },
   onSuccessCallback,
 }: FetchConfig) {
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<U | null>(null);
-  const { getCache, setCache, deleteCache } = useCache<T>();
+  const [data, setData] = useState<TResponse | null>(null);
+  const [error, setError] = useState<UError | null>(null);
+  const { getCache, setCache, deleteCache } = useCache<TResponse>();
 
-  async function handleRequest(body?: T): Promise<void> {
+  async function handleRequest(body?: VBody): Promise<void> {
     if (!noCache && getCache(key) != null) {
       setData(getCache(key));
       setIsLoading(false);
@@ -57,27 +58,29 @@ export function useFetch<T, U = unknown>({
 
     const response = await fetch(url, {
       ...init,
-      body: !isSafeMethod(init?.method) ? JSON.stringify(body) : null,
+      body: isSafeMethod(init?.method) ? null : JSON.stringify(body),
     });
 
     //if the content is null, it fails when using response.json()
     const hasJsonContent = Boolean(parseInt(response.headers.get('content-length') ?? '0', 10));
 
-    const content = hasJsonContent ? await response.json() : null;
-
     if (response.ok) {
       setError(null);
       setIsLoading(false);
-      setData(content);
-      setCache(key, content, ttl);
+
+      const contentResponse = hasJsonContent ? ((await response.json()) as TResponse) : null;
+      setData(contentResponse);
+      setCache(key, contentResponse, ttl);
 
       if (typeof onSuccessCallback === 'function') {
         onSuccessCallback();
       }
     } else {
-      setError(content);
       setIsLoading(false);
       setData(null);
+
+      const errorResponse = hasJsonContent ? ((await response.json()) as UError) : null;
+      setError(errorResponse);
     }
   }
 
@@ -87,7 +90,7 @@ export function useFetch<T, U = unknown>({
 
   useEffect(() => {
     if (isSafeMethod(init?.method)) {
-      handleRequest();
+      void handleRequest();
     }
   });
 

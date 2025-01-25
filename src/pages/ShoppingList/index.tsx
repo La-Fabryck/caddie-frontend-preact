@@ -1,7 +1,7 @@
 import { type FC, type JSX } from 'preact/compat';
 import { useRoute } from 'preact-iso';
 import { useFetch } from '@/hooks';
-import { Item, List } from '@/responses';
+import { type Item, type List } from '@/responses';
 
 function printLists(items: Item[]): JSX.Element {
   if (items.length === 0) {

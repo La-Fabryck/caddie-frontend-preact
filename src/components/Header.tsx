@@ -1,4 +1,4 @@
-import type { JSX } from 'preact/jsx-runtime';
+import { type JSX } from 'preact/jsx-runtime';
 import { useLocation } from 'preact-iso';
 
 export function Header(): JSX.Element {

@@ -1,6 +1,6 @@
 import { type JSX, useState } from 'preact/compat';
 import { Route, type RouteProps } from 'preact-iso';
-import { Login } from '@/pages/Login';
+import { Login } from '@/pages';
 
 function isAuthenticated(): boolean {
   return window.localStorage.getItem('isAuthenticated') === '1';

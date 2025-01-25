@@ -1,47 +1,30 @@
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
-import { FlatCompat } from '@eslint/eslintrc';
-import js from '@eslint/js';
-import typescriptEslintEslintPlugin from '@typescript-eslint/eslint-plugin';
-// eslint-disable-next-line import/default
-import tsParser from '@typescript-eslint/parser';
-// @ts-expect-error types not shipped
-import _import from 'eslint-plugin-import';
+// @ts-check
+import eslint from '@eslint/js';
+import * as tsParser from '@typescript-eslint/parser';
+// @ts-ignore
+import * as importPlugin from 'eslint-plugin-import';
+import react from "eslint-plugin-react"
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
+import tseslint, { configs as tsconfigs } from 'typescript-eslint';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
-
-export default [
+export default tseslint.config(
   {
-    ignores: [],
+    ignores: ['eslint.config.mjs'],
   },
-  ...fixupConfigRules(
-    compat.extends(
-      'plugin:react/recommended',
-      'plugin:@typescript-eslint/recommended',
-      'plugin:prettier/recommended',
-      'plugin:import/errors',
-      'plugin:import/warnings',
-    ),
-  ),
+  eslint.configs.recommended,
+  ...tsconfigs.recommendedTypeChecked,
+  //@ts-expect-error expect any due to not being a TS module
+  importPlugin.flatConfigs.recommended,
+  eslintPluginPrettierRecommended,
   {
     plugins: {
-      // @ts-expect-error incompatible types
-      '@typescript-eslint': fixupPluginRules(typescriptEslintEslintPlugin),
-      import: fixupPluginRules(_import),
+      react
     },
 
     languageOptions: {
       globals: {
         ...globals.browser,
-        ...Object.fromEntries(Object.entries(globals.jest).map(([key]) => [key, 'off'])),
       },
 
       parser: tsParser,
@@ -50,7 +33,10 @@ export default [
 
       parserOptions: {
         project: 'tsconfig.json',
-        tsconfigRootDir: __dirname,
+        tsconfigRootDir: import.meta.dirname,
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
     },
 
@@ -85,8 +71,16 @@ export default [
       '@typescript-eslint/interface-name-prefix': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-explicit-any': 'error',
-      eqeqeq: ['error', 'always', { null: 'ignore' }],
+      '@typescript-eslint/no-explicit-any': 'off',
+
+      // https://typescript-eslint.io/blog/consistent-type-imports-and-exports-why-and-how/
+      // Consistently add inline type to imports
+      '@typescript-eslint/consistent-type-exports': 'error',
+      '@typescript-eslint/consistent-type-imports': 'error',
+      'import/consistent-type-specifier-style': ['error', 'prefer-inline'],
+      'import/no-duplicates': ['error', { 'prefer-inline': true }],
+
+      // Alphabetical order imports
       'import/order': [
         'error',
         {
@@ -112,7 +106,21 @@ export default [
           ignoreDeclarationSort: true,
         },
       ],
+      
+      eqeqeq: ['error', 'always', { null: 'ignore' }],
       yoda: ['error', 'never'],
+
+      // https://github.com/orgs/react-hook-form/discussions/8622#discussioncomment-4060570
+      // Allow React Hooks Form handleSubmit to take () => Promise<void>
+      "@typescript-eslint/no-misused-promises": [
+        "error",
+        {
+          "checksVoidReturn": {
+            // Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns void.
+            "attributes": false
+          }
+        }
+      ]
     },
   },
-];
+);

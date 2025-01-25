@@ -1,7 +1,7 @@
-import type { FC, JSX } from 'preact/compat';
+import { type FC, type JSX } from 'preact/compat';
 import { Button } from '@/components/Button';
 import { useFetch } from '@/hooks';
-import type { List } from '@/responses';
+import { type List } from '@/responses';
 
 function printLists(lists: List[]): JSX.Element {
   return (

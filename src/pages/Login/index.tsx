@@ -10,10 +10,14 @@ type Credentials = {
 type LoginProps = {
   onSuccessCallback: () => void;
 };
-
+//TODO: handle errors
 export const Login: FC<LoginProps> = ({ onSuccessCallback }) => {
   const { handleSubmit, formState, register } = useForm<Credentials>();
-  const { handleRequest, isLoading, data, error } = useFetch({
+  const {
+    handleRequest: handleLogin,
+    isLoading,
+    error,
+  } = useFetch<null, unknown, Credentials>({
     url: '/api/authentication/login',
     init: {
       method: 'POST',
@@ -29,10 +33,9 @@ export const Login: FC<LoginProps> = ({ onSuccessCallback }) => {
     <>
       {isLoading && <p>Loading...</p>}
       {error != null && <p>errors {JSON.stringify(error, null, 4)}</p>}
-      {data != null && <p>data {JSON.stringify(data, null, 4)}</p>}
       <br />
       <br />
-      <form onSubmit={handleSubmit(handleRequest)}>
+      <form onSubmit={handleSubmit(handleLogin)}>
         <label htmlFor="email">Email</label>
         {formState.errors.email?.type === 'required' && <p role="alert">Email is required</p>}
         <input id="email" type="email" {...register('email', { required: true })} />

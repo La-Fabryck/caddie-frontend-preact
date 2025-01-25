@@ -1,6 +1,7 @@
 # v1 Bare minimum
 
 - Display the list (Basics done)
+- Handle form errors
 - Create a list
 - Create a link to subscribe
 - Allow subscription

@@ -1,2 +1,2 @@
-export * from './item';
-export * from './list';
+export type * from './item';
+export type * from './list';
