@@ -5,11 +5,15 @@
 - Create a list
 - Create a link to subscribe
 - Allow subscription
-- Add items to the list
+- Add/remove items to the list
+- quantity of items
 - TailWind CSS not ugly
 - [Signals](https://preactjs.com/guide/v10/signals/)
 - List with 2 buttons, V and X, V is found / ok, X is put in a list with all missing items.
 - Log out (clear cache etc)
+- list flag (active/inactive)
+- item type
+- add creation and modification date to shopping list
 
 # v1.1 Nicer things
 
