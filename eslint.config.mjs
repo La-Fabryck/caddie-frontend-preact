@@ -1,9 +1,9 @@
 // @ts-check
 import eslint from '@eslint/js';
 import * as tsParser from '@typescript-eslint/parser';
-// @ts-ignore
-import * as importPlugin from 'eslint-plugin-import';
-import react from "eslint-plugin-react"
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
+import eslintPluginImportX from 'eslint-plugin-import-x';
+import react from "eslint-plugin-react";
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import tseslint, { configs as tsconfigs } from 'typescript-eslint';
@@ -14,8 +14,8 @@ export default tseslint.config(
   },
   eslint.configs.recommended,
   ...tsconfigs.recommendedTypeChecked,
-  //@ts-expect-error expect any due to not being a TS module
-  importPlugin.flatConfigs.recommended,
+  eslintPluginImportX.flatConfigs.recommended,
+  eslintPluginImportX.flatConfigs.typescript,
   eslintPluginPrettierRecommended,
   {
     plugins: {
@@ -28,11 +28,11 @@ export default tseslint.config(
       },
 
       parser: tsParser,
-      ecmaVersion: 5,
+      ecmaVersion: 'latest',
       sourceType: 'module',
 
       parserOptions: {
-        project: 'tsconfig.json',
+        project: ['tsconfig.json', 'tsconfig.app.json', 'tsconfig.node.json'],
         tsconfigRootDir: import.meta.dirname,
         ecmaFeatures: {
           jsx: true,
@@ -41,22 +41,14 @@ export default tseslint.config(
     },
 
     settings: {
-      'import/parsers': {
-        '@typescript-eslint/parser': ['.ts', '.tsx'],
-      },
-
-      'import/resolver': {
-        node: {
+      // https://www.npmjs.com/package/eslint-import-resolver-typescript#configuration
+      "import/resolver-next": [
+        createTypeScriptImportResolver({
+          alwaysTryTypes: true, 
+          project: ['<root>/tsconfig.json', '<root>/tsconfig.app.json', '<root>/tsconfig.node.json'],
           extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        },
-
-        typescript: {
-          alwaysTryTypes: true,
-          project: '<root>/tsconfig.json',
-        },
-      },
-
-      'import/internal-regex': '^@/',
+        }),
+      ],
 
       react: {
         version: 'detect',
@@ -77,11 +69,11 @@ export default tseslint.config(
       // Consistently add inline type to imports
       '@typescript-eslint/consistent-type-exports': 'error',
       '@typescript-eslint/consistent-type-imports': 'error',
-      'import/consistent-type-specifier-style': ['error', 'prefer-inline'],
-      'import/no-duplicates': ['error', { 'prefer-inline': true }],
+      'import-x/consistent-type-specifier-style': ['error', 'prefer-inline'],
+      'import-x/no-duplicates': ['error', { 'prefer-inline': true }],
 
       // Alphabetical order imports
-      'import/order': [
+      'import-x/order': [
         'error',
         {
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
@@ -106,7 +98,7 @@ export default tseslint.config(
           ignoreDeclarationSort: true,
         },
       ],
-      
+
       eqeqeq: ['error', 'always', { null: 'ignore' }],
       yoda: ['error', 'never'],
 
