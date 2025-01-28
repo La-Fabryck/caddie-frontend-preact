@@ -1,9 +1,17 @@
 import { type FC, type JSX } from 'preact/compat';
-import { Button } from '@/components/Button';
+import { Button } from '@/components';
 import { useFetch } from '@/hooks';
 import { type List } from '@/responses';
 
-function printLists(lists: List[]): JSX.Element {
+function printLists(isLoading: boolean, lists: List[]): JSX.Element {
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (lists.length === 0) {
+    return <p>Créé ta première liste nondidju !</p>;
+  }
+
   return (
     <ul>
       {lists.map((l) => (
@@ -48,12 +56,11 @@ export const Home: FC = () => {
   return (
     <div className="py-5">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <Button text="+ Nouvelle liste" />
+        <Button text="+ Nouvelle liste" onClick={() => console.log('toto')} />
         <div className="mx-auto max-w-2xl lg:mx-0 my-5">
           <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Mes listes de courses</h2>
         </div>
-        {isLoading && <p>Loading...</p>}
-        {lists != null && lists.length ? printLists(lists) : <p>Créé ta première liste nondidju !</p>}
+        {printLists(isLoading, lists ?? [])}
       </div>
     </div>
   );
