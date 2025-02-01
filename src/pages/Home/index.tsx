@@ -1,4 +1,4 @@
-import { type FC, type JSX } from 'preact/compat';
+import { type JSX } from 'preact/compat';
 import { Button } from '@/components';
 import { useFetch } from '@/hooks';
 import { type List } from '@/responses';
@@ -8,7 +8,7 @@ function printLists(isLoading: boolean, lists: List[]): JSX.Element {
     return <p>Loading...</p>;
   }
 
-  if (lists.length === 0) {
+  if (!lists.length) {
     return <p>Créé ta première liste nondidju !</p>;
   }
 
@@ -47,7 +47,7 @@ function printLists(isLoading: boolean, lists: List[]): JSX.Element {
   );
 }
 
-export const Home: FC = () => {
+export function Home(): JSX.Element {
   const { data: lists, isLoading } = useFetch<List[]>({
     url: '/api/list',
     options: { key: 'lists' },
@@ -64,4 +64,4 @@ export const Home: FC = () => {
       </div>
     </div>
   );
-};
+}

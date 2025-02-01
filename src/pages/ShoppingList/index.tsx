@@ -1,10 +1,10 @@
-import { type FC, type JSX } from 'preact/compat';
+import { type JSX } from 'preact/compat';
 import { useRoute } from 'preact-iso';
 import { useFetch } from '@/hooks';
 import { type Item, type List } from '@/responses';
 
 function printLists(items: Item[]): JSX.Element {
-  if (items.length === 0) {
+  if (!items.length) {
     return <p>No items found</p>;
   }
 
@@ -18,13 +18,14 @@ function printLists(items: Item[]): JSX.Element {
               role="button"
               className="flex w-full items-center rounded-lg p-0 transition-all hover:bg-base focus:bg-slate-100 active:bg-slate-100"
             >
-              <label htmlFor={item.id} className="flex w-full cursor-pointer items-center px-3 py-2 ">
+              <label htmlFor={item.id} className="flex w-full cursor-pointer items-center px-3 py-2" aria-labelledby={`label-${item.id}`}>
                 <div className="inline-flex items-center">
-                  <label className="flex items-center cursor-pointer relative" htmlFor={item.id}>
+                  <div className="flex items-center cursor-pointer relative">
                     <input
                       type="checkbox"
                       className="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-pink checked:bg-pink"
                       id={item.id}
+                      aria-labelledby={`label-${item.id}`}
                     />
                     <svg
                       className="absolute w-3 h-4 pointer-events-none hidden peer-checked:block stroke-crust ml-1 outline-none"
@@ -38,10 +39,10 @@ function printLists(items: Item[]): JSX.Element {
                     >
                       <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
-                  </label>
-                  <label className="cursor-pointer ml-2 text-sm" htmlFor={item.id}>
+                  </div>
+                  <span id={`label-${item.id}`} className="cursor-pointer ml-2 text-sm">
                     {item.name}
-                  </label>
+                  </span>
                 </div>
               </label>
             </div>
@@ -52,7 +53,7 @@ function printLists(items: Item[]): JSX.Element {
   );
 }
 
-export const ShoppingList: FC = () => {
+export function ShoppingList(): JSX.Element {
   const {
     params: { shoppingListId },
   } = useRoute();
@@ -75,10 +76,10 @@ export const ShoppingList: FC = () => {
     <div className="py-5">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0 my-5">
-          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">{list?.title || 'Ma liste'}</h2>
+          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">{list?.title ?? 'Ma liste'}</h2>
         </div>
         {items != null && printLists(items)}
       </div>
     </div>
   );
-};
+}

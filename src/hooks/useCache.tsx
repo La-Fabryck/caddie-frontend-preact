@@ -2,9 +2,9 @@ import { createContext, type JSX } from 'preact';
 import { useContext } from 'preact/hooks';
 import { type ReactNode } from 'react';
 
-type ContextType<T> = {
+type ContextType<T = unknown> = {
   getCache: (key: string) => T | null;
-  setCache: (key: string, value: T | null, ttl?: number) => void;
+  setCache: (key: string, value: T | null, ttl: number) => void;
   clearCache: () => void;
   deleteCache: (key: string) => void;
 };
@@ -14,10 +14,10 @@ type CacheEntry<T> = {
   data: T;
 };
 
-const CacheContext = createContext(null as any);
+const CacheContext = createContext({});
 
-export function useCache<T>() {
-  return useContext<ContextType<T>>(CacheContext);
+export function useCache<T>(): ContextType<T> {
+  return useContext(CacheContext) as unknown as ContextType<T>;
 }
 
 export function CacheProvider<T>({ children }: { children: ReactNode }): JSX.Element {
@@ -37,7 +37,7 @@ export function CacheProvider<T>({ children }: { children: ReactNode }): JSX.Ele
     return cacheValue.data;
   }
 
-  function setCache(key: string, value: T | null, ttl: number = 10): void {
+  function setCache(key: string, value: T | null, ttl: number): void {
     if (value == null) {
       return;
     }
@@ -56,7 +56,7 @@ export function CacheProvider<T>({ children }: { children: ReactNode }): JSX.Ele
     map.delete(key);
   }
 
-  const contextValue = {
+  const contextValue: ContextType<T> = {
     getCache,
     setCache,
     clearCache,

@@ -20,6 +20,8 @@ type FetchConfig = {
   onSuccessCallback?: () => void;
 };
 
+// 5 minutes in ms
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const TTL_DEFAULT = 5 * 60 * 1000;
 
 /**
@@ -62,7 +64,7 @@ export function useFetch<TResponse = unknown, UError = unknown, VBody = unknown>
     });
 
     //if the content is null, it fails when using response.json()
-    const hasJsonContent = Boolean(parseInt(response.headers.get('content-length') ?? '0', 10));
+    const hasJsonContent = Boolean(parseInt(response.headers.get('content-length') ?? '0'));
 
     if (response.ok) {
       setError(null);
