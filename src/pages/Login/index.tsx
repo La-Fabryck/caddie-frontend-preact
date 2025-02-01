@@ -1,4 +1,5 @@
-import { type FC } from 'preact/compat';
+import { type JSX } from 'preact/compat';
+import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
 import { useFetch } from '@/hooks';
 
@@ -7,11 +8,9 @@ type Credentials = {
   password: string;
 };
 
-type LoginProps = {
-  onSuccessCallback: () => void;
-};
 //TODO: handle errors
-export const Login: FC<LoginProps> = ({ onSuccessCallback }) => {
+export function Login(): JSX.Element {
+  const location = useLocation();
   const { handleSubmit, formState, register } = useForm<Credentials>();
   const {
     handleRequest: handleLogin,
@@ -26,12 +25,17 @@ export const Login: FC<LoginProps> = ({ onSuccessCallback }) => {
       },
     },
     options: { key: 'user' },
-    onSuccessCallback,
+    onSuccessCallback: () => {
+      window.localStorage.setItem('isAuthenticated', '1');
+      location.route('/', true);
+    },
   });
 
   return (
     <>
       {isLoading && <p>Loading...</p>}
+      {/* TODO: */}
+      {/* eslint-disable-next-line @typescript-eslint/no-magic-numbers */}
       {error != null && <p>errors {JSON.stringify(error, null, 4)}</p>}
       <br />
       <br />
@@ -48,4 +52,4 @@ export const Login: FC<LoginProps> = ({ onSuccessCallback }) => {
       </form>
     </>
   );
-};
+}
