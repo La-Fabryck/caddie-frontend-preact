@@ -1,8 +1,6 @@
-// eslint-disable-next-line import/no-named-as-default
-import preact from '@preact/preset-vite';
+import { preact } from '@preact/preset-vite';
 import { defineConfig } from 'vite';
-// eslint-disable-next-line import/default
-import checker from 'vite-plugin-checker';
+import { checker } from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
