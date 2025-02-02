@@ -1,23 +1,29 @@
-import { useEffect, useState } from 'preact/hooks';
+import { batch, useSignal } from '@preact/signals';
 import { useCache } from './useCache';
 
 type HTTPMethods = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE';
-type RequestOptions = Omit<RequestInit, 'method'> & { method: HTTPMethods };
+type FetchRequestInit = Omit<RequestInit, 'method'> & { method: HTTPMethods };
 
-//TODO: instead of init, a helper method, just pass the HTTP Method and it initiates on its own
-type FetchConfig = {
+type FetchConfig = GetConfig | MutationConfig;
+
+type GetConfig = {
   url: RequestInfo;
-  init?: RequestOptions;
-  options: {
+  method?: Extract<HTTPMethods, 'GET'>;
+  key: string;
+  options?: {
     noCache?: boolean;
     ttl?: number;
-    key: string;
   };
+};
+
+type MutationConfig = {
+  url: RequestInfo;
+  method: Extract<HTTPMethods, 'DELETE' | 'PATCH' | 'POST' | 'PUT'>;
   /*
    * Perform side effect actions. To be used with mutation (patch, post, put, etc).
    * Redirection, state update, etc, to be performed here
    */
-  onSuccessCallback?: () => void;
+  onSuccessCallback: () => void;
 };
 
 // 5 minutes in ms
@@ -33,74 +39,101 @@ function isSafeMethod(method: HTTPMethods = 'GET'): boolean {
   return ['GET', 'HEAD', 'OPTIONS'].includes(method);
 }
 
+function isMutation(method: HTTPMethods = 'GET'): boolean {
+  return ['PATCH', 'POST', 'PUT'].includes(method);
+}
+
+function fetchInitConfig(method: HTTPMethods = 'GET', body?: unknown): FetchRequestInit {
+  if (!isMutation(method) || method === 'DELETE') {
+    return {
+      method,
+    };
+  }
+
+  return {
+    method,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  };
+}
+
 /**
  * Custom hook intended to work similarly as useQuery but less bloated. One hook for both
  */
-export function useFetch<TResponse = unknown, UError = unknown, VBody = unknown>({
-  url,
-  init,
-  options: { noCache = false, ttl = TTL_DEFAULT, key },
-  onSuccessCallback,
-}: FetchConfig) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<TResponse | null>(null);
-  const [error, setError] = useState<UError | null>(null);
+export function useFetch<TResponse = unknown, UError = unknown, VBody = FetchRequestInit['body']>(fetchConfig: FetchConfig) {
+  const isLoading = useSignal<boolean>(false);
+  const data = useSignal<TResponse | null>(null);
+  const error = useSignal<UError | null>(null);
   const { getCache, setCache, deleteCache } = useCache<TResponse>();
 
-  async function handleRequest(body?: VBody): Promise<void> {
-    if (!noCache && getCache(key) != null) {
-      setData(getCache(key));
-      setIsLoading(false);
-      setError(null);
-      return;
+  async function executeRequest(body?: VBody): Promise<void> {
+    if ('key' in fetchConfig && !(fetchConfig.options?.noCache ?? false)) {
+      const cacheHit = getCache(fetchConfig.key);
+      if (cacheHit != null) {
+        batch(() => {
+          data.value = cacheHit;
+          isLoading.value = false;
+          error.value = null;
+        });
+
+        return;
+      }
     }
 
-    setIsLoading(true);
-    setError(null);
+    batch(() => {
+      data.value = null;
+      isLoading.value = true;
+      error.value = null;
+    });
 
-    const response = await fetch(url, {
-      ...init,
-      body: isSafeMethod(init?.method) ? null : JSON.stringify(body),
+    const response = await fetch(fetchConfig.url, {
+      ...fetchInitConfig(fetchConfig.method, body),
     });
 
     //if the content is null, it fails when using response.json()
     const hasJsonContent = Boolean(parseInt(response.headers.get('content-length') ?? '0'));
 
     if (response.ok) {
-      setError(null);
-      setIsLoading(false);
-
       const contentResponse = hasJsonContent ? ((await response.json()) as TResponse) : null;
-      setData(contentResponse);
-      setCache(key, contentResponse, ttl);
+      batch(() => {
+        error.value = null;
+        isLoading.value = false;
+        data.value = contentResponse;
+      });
 
-      if (typeof onSuccessCallback === 'function') {
-        onSuccessCallback();
+      if ('key' in fetchConfig && isSafeMethod(fetchConfig.method)) {
+        setCache(fetchConfig.key, contentResponse, fetchConfig.options?.ttl ?? TTL_DEFAULT);
+      }
+
+      if ('onSuccessCallback' in fetchConfig && typeof fetchConfig.onSuccessCallback === 'function') {
+        fetchConfig.onSuccessCallback();
       }
     } else {
-      setIsLoading(false);
-      setData(null);
-
       const errorResponse = hasJsonContent ? ((await response.json()) as UError) : null;
-      setError(errorResponse);
+      batch(() => {
+        error.value = errorResponse;
+        isLoading.value = false;
+        data.value = null;
+      });
     }
   }
 
-  function inValidate(key: FetchConfig['options']['key']) {
+  function invalidate(key: GetConfig['key']) {
     deleteCache(key);
   }
 
-  useEffect(() => {
-    if (isSafeMethod(init?.method)) {
-      void handleRequest();
-    }
-  });
+  if (isSafeMethod(fetchConfig.method)) {
+    void executeRequest();
+  }
 
   return {
     isLoading,
     data,
     error,
-    handleRequest,
-    inValidate,
+    executeRequest,
+    invalidate,
   } as const;
 }

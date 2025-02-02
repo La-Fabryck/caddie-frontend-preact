@@ -7,24 +7,24 @@ type Credentials = {
   email: string;
   password: string;
 };
+type ErrorMessage = { message: string };
+type LoginErrors = {
+  password: ErrorMessage[];
+  email: ErrorMessage[];
+  top: ErrorMessage[];
+};
 
 //TODO: handle errors
 export function Login(): JSX.Element {
   const location = useLocation();
   const { handleSubmit, formState, register } = useForm<Credentials>();
   const {
-    handleRequest: handleLogin,
+    executeRequest: handleLogin,
     isLoading,
     error,
-  } = useFetch<null, unknown, Credentials>({
+  } = useFetch<null, LoginErrors, Credentials>({
     url: '/api/authentication/login',
-    init: {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    },
-    options: { key: 'user' },
+    method: 'POST',
     onSuccessCallback: () => {
       window.localStorage.setItem('isAuthenticated', '1');
       location.route('/', true);
@@ -33,13 +33,14 @@ export function Login(): JSX.Element {
 
   return (
     <>
-      {isLoading && <p>Loading...</p>}
+      {isLoading.value && <p>Loading...</p>}
       {/* TODO: */}
       {/* eslint-disable-next-line @typescript-eslint/no-magic-numbers */}
-      {error != null && <p>errors {JSON.stringify(error, null, 4)}</p>}
+      {error.value != null && <p>errors {JSON.stringify(error.value, null, 4)}</p>}
       <br />
       <br />
       <form onSubmit={handleSubmit(handleLogin)}>
+        {/* <Form > */}
         <label htmlFor="email">Email</label>
         {formState.errors.email?.type === 'required' && <p role="alert">Email is required</p>}
         <input id="email" type="email" {...register('email', { required: true })} />
@@ -50,6 +51,7 @@ export function Login(): JSX.Element {
         <br />
         <input type="submit" />
       </form>
+      {/* </Form> */}
     </>
   );
 }

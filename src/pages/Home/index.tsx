@@ -1,5 +1,6 @@
 import { type JSX } from 'preact/compat';
 import { Button } from '@/components';
+import { createAllListsKey } from '@/helpers';
 import { useFetch } from '@/hooks';
 import { type List } from '@/responses';
 
@@ -48,19 +49,20 @@ function printLists(isLoading: boolean, lists: List[]): JSX.Element {
 }
 
 export function Home(): JSX.Element {
-  const { data: lists, isLoading } = useFetch<List[]>({
+  const { data: allLists, isLoading } = useFetch<List[]>({
     url: '/api/list',
-    options: { key: 'lists' },
+    key: createAllListsKey(),
   });
 
   return (
     <div className="py-5">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {/* TODO: link not button */}
         <Button text="+ Nouvelle liste" onClick={() => console.log('toto')} />
         <div className="mx-auto max-w-2xl lg:mx-0 my-5">
           <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Mes listes de courses</h2>
         </div>
-        {printLists(isLoading, lists ?? [])}
+        {printLists(isLoading.value, allLists.value ?? [])}
       </div>
     </div>
   );
