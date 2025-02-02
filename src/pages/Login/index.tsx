@@ -1,4 +1,4 @@
-import { type JSX } from 'preact/compat';
+import { type JSX, useEffect } from 'preact/compat';
 import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
 import { useFetch } from '@/hooks';
@@ -14,10 +14,9 @@ type LoginErrors = {
   top: ErrorMessage[];
 };
 
-//TODO: handle errors
 export function Login(): JSX.Element {
   const location = useLocation();
-  const { handleSubmit, formState, register } = useForm<Credentials>();
+  const { handleSubmit, formState, register, setError } = useForm<Credentials>();
   const {
     executeRequest: handleLogin,
     isLoading,
@@ -31,6 +30,15 @@ export function Login(): JSX.Element {
     },
   });
 
+  useEffect(() => {
+    if (error.value != null) {
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      setError('root', { message: error.value.top[0].message });
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      setError('email', { message: error.value.top[0].message });
+    }
+  }, [setError, error.value]);
+
   return (
     <>
       {isLoading.value && <p>Loading...</p>}
@@ -40,18 +48,17 @@ export function Login(): JSX.Element {
       <br />
       <br />
       <form onSubmit={handleSubmit(handleLogin)}>
-        {/* <Form > */}
+        {formState.errors.root && <p role="alert">{formState.errors.root.message}</p>}
+        {formState.errors.email && <p role="alert">{formState.errors.email.message}</p>}
         <label htmlFor="email">Email</label>
-        {formState.errors.email?.type === 'required' && <p role="alert">Email is required</p>}
         <input id="email" type="email" {...register('email', { required: true })} />
         <br />
+        {formState.errors.password && <p role="alert">Password is required</p>}
         <label htmlFor="password">Password</label>
-        {formState.errors.password?.type === 'required' && <p role="alert">Password is required</p>}
-        <input id="password" type="password" {...register('password', { required: false })} />
+        <input id="password" type="password" {...register('password', { required: true })} />
         <br />
         <input type="submit" />
       </form>
-      {/* </Form> */}
     </>
   );
 }
