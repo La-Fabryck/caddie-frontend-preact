@@ -1,4 +1,5 @@
 import { batch, useSignal } from '@preact/signals';
+import { useEffect } from 'preact/hooks';
 import { useCache } from './useCache';
 
 type HTTPMethods = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE';
@@ -24,6 +25,7 @@ type MutationConfig = {
    * Redirection, state update, etc, to be performed here
    */
   onSuccessCallback: () => void;
+  onErrorCallback: () => void;
 };
 
 // 5 minutes in ms
@@ -118,6 +120,10 @@ export function useFetch<TResponse = unknown, UError = unknown, VBody = FetchReq
         isLoading.value = false;
         data.value = null;
       });
+
+      if ('onErrorCallback' in fetchConfig && typeof fetchConfig.onErrorCallback === 'function') {
+        fetchConfig.onErrorCallback();
+      }
     }
   }
 
@@ -125,9 +131,11 @@ export function useFetch<TResponse = unknown, UError = unknown, VBody = FetchReq
     deleteCache(key);
   }
 
-  if (isSafeMethod(fetchConfig.method)) {
-    void executeRequest();
-  }
+  useEffect(() => {
+    if (isSafeMethod(fetchConfig.method)) {
+      void executeRequest();
+    }
+  });
 
   return {
     isLoading,
