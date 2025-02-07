@@ -74,6 +74,8 @@ export default tseslint.config(
       // ---> react specifics
       'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
       // https://github.com/orgs/react-hook-form/discussions/8622#discussioncomment-4060570
       // Allow React Hooks Form handleSubmit to take () => Promise<void>
       '@typescript-eslint/no-misused-promises': [
@@ -197,7 +199,7 @@ export default tseslint.config(
       // Disallow the unary operators ++ and --
       'no-plusplus': 'error',
 
-      // Disallow javascript: URLs. ex: location.href = "javascript:void(0)";
+      // Disallow javascript: URLs. ex: location.href = 'javascript:void(0)';
       'no-script-url': 'error',
 
       // Disallow ternary operators when simpler alternatives exist

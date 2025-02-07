@@ -1,23 +1,19 @@
 import { type JSX } from 'preact/compat';
 import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
+import { type FormErrors, transformBackendErrorsToForm } from '@/helpers';
 import { useFetch } from '@/hooks';
 
 type Credentials = {
   email: string;
   password: string;
 };
-type ErrorMessage = { message: string };
-type LoginErrors = {
-  password: ErrorMessage[];
-  email: ErrorMessage[];
-  top: ErrorMessage[];
-};
 
-//TODO: handle errors
+type LoginErrors = FormErrors<Credentials>;
+
 export function Login(): JSX.Element {
   const location = useLocation();
-  const { handleSubmit, formState, register } = useForm<Credentials>();
+  const { handleSubmit, formState, register, setError } = useForm<Credentials>();
   const {
     executeRequest: handleLogin,
     isLoading,
@@ -29,29 +25,29 @@ export function Login(): JSX.Element {
       window.localStorage.setItem('isAuthenticated', '1');
       location.route('/', true);
     },
+    onErrorCallback: () => {
+      transformBackendErrorsToForm(setError, error);
+    },
   });
 
   return (
     <>
+      <h1>Mon super formulaire des familles</h1>
       {isLoading.value && <p>Loading...</p>}
-      {/* TODO: */}
-      {/* eslint-disable-next-line @typescript-eslint/no-magic-numbers */}
-      {error.value != null && <p>errors {JSON.stringify(error.value, null, 4)}</p>}
       <br />
       <br />
       <form onSubmit={handleSubmit(handleLogin)}>
-        {/* <Form > */}
+        {formState.errors.root && <p role="alert">{formState.errors.root.message}</p>}
+        {formState.errors.email && <p role="alert">{formState.errors.email.message}</p>}
         <label htmlFor="email">Email</label>
-        {formState.errors.email?.type === 'required' && <p role="alert">Email is required</p>}
         <input id="email" type="email" {...register('email', { required: true })} />
         <br />
+        {formState.errors.password && <p role="alert">Password is required</p>}
         <label htmlFor="password">Password</label>
-        {formState.errors.password?.type === 'required' && <p role="alert">Password is required</p>}
-        <input id="password" type="password" {...register('password', { required: false })} />
+        <input id="password" type="password" {...register('password', { required: true })} />
         <br />
         <input type="submit" />
       </form>
-      {/* </Form> */}
     </>
   );
 }
