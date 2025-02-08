@@ -1,4 +1,5 @@
 import { preact } from '@preact/preset-vite';
+import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 import { checker } from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -6,17 +7,18 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    preact(),
-    tsconfigPaths(),
     checker({
       typescript: true,
     }),
+    preact(),
+    tailwindcss(),
+    tsconfigPaths(),
   ],
   server: {
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'http://backend:3001',
+        target: process.env['VITE_BACKEND_URL'],
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
         configure: (proxy) => {
