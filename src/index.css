@@ -1,15 +1,61 @@
+@import 'tailwindcss';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@custom-variant dark (@media (prefers-color-scheme: dark));
+
+@theme {
+  --color-text: #cad3f5;
+  --color-subtext1: #b8c0e0;
+  --color-subtext0: #a5adcb;
+  --color-overlay2: #939ab7;
+  --color-overlay1: #8087a2;
+  --color-overlay0: #6e738d;
+  --color-surface2: #5b6078;
+  --color-surface1: #494d64;
+  --color-surface0: #363a4f;
+  --color-base: #24273a;
+  --color-mantle: #1e2030;
+  --color-crust: #181926;
+  --color-yellow: #eed49f;
+  --color-green: #a6da95;
+  --color-sapphire: #7dc4e4;
+  --color-teal: #8bd5ca;
+  --color-sky: #91d7e3;
+  --color-blue: #8aadf4;
+  --color-lavender: #b7bdf8;
+  --color-peach: #f5a97f;
+  --color-maroon: #ee99a0;
+  --color-red: #ed8796;
+  --color-mauve: #c6a0f6;
+  --color-pink: #f5bde6;
+  --color-flamingo: #f0c6c6;
+  --color-rosewater: #f4dbd6;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 :root {
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 	line-height: 1.5;
 	font-weight: 400;
 
-	color: theme('colors.text');
-	background-color: theme('colors.base');
+	color: var(--color-text);
+	background-color: var(--color-base);
 
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;

@@ -23,12 +23,12 @@ function printLists(items: Item[]): JSX.Element {
                   <div className="flex items-center cursor-pointer relative">
                     <input
                       type="checkbox"
-                      className="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-pink checked:bg-pink"
+                      className="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded-sm shadow-sm hover:shadow-md border border-pink checked:bg-pink"
                       id={item.id}
                       aria-labelledby={`label-${item.id}`}
                     />
                     <svg
-                      className="absolute w-3 h-4 pointer-events-none hidden peer-checked:block stroke-crust ml-1 outline-none"
+                      className="absolute w-3 h-4 pointer-events-none hidden peer-checked:block stroke-crust ml-1 outline-hidden"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="none"
