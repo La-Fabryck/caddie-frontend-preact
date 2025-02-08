@@ -16,10 +16,16 @@ type CacheEntry<T> = {
 
 const CacheContext = createContext({});
 
+/**
+ * Context intended to work with useFetch
+ */
 export function useCache<T>(): ContextType<T> {
   return useContext(CacheContext) as unknown as ContextType<T>;
 }
 
+/**
+ * CacheProvider intended to work with useFetch
+ */
 export function CacheProvider<T>({ children }: { children: ReactNode }): JSX.Element {
   const map = new Map<string, CacheEntry<T>>();
 

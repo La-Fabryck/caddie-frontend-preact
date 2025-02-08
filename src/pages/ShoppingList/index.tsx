@@ -1,6 +1,6 @@
 import { type JSX } from 'preact/compat';
 import { useRoute } from 'preact-iso';
-import { createItemKey, createListKey } from '@/helpers';
+import { buildURL, createItemKey, createListKey } from '@/helpers';
 import { useFetch } from '@/hooks';
 import { type Item, type List } from '@/responses';
 
@@ -59,12 +59,12 @@ export function ShoppingList(): JSX.Element {
   } = useRoute();
 
   const { data: listDetail, isLoading: isLoadingList } = useFetch<List>({
-    url: `/api/list/${shoppingListId}`,
+    url: buildURL(`/list/${shoppingListId}`),
     key: createListKey(shoppingListId),
   });
 
   const { data: items, isLoading: isLoadingItems } = useFetch<Item[]>({
-    url: `/api/list/${shoppingListId}/items`,
+    url: buildURL(`/list/${shoppingListId}/items`),
     key: createItemKey(shoppingListId),
   });
 

@@ -1,7 +1,7 @@
 import { type JSX } from 'preact/compat';
 import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
-import { type FormErrors, transformBackendErrorsToForm } from '@/helpers';
+import { buildURL, type FormErrors, feedServerErrorsToForm } from '@/helpers';
 import { useFetch } from '@/hooks';
 
 type Credentials = {
@@ -19,14 +19,14 @@ export function Login(): JSX.Element {
     isLoading,
     error,
   } = useFetch<null, LoginErrors, Credentials>({
-    url: '/api/authentication/login',
+    url: buildURL('/authentication/login'),
     method: 'POST',
     onSuccessCallback: () => {
       window.localStorage.setItem('isAuthenticated', '1');
       location.route('/', true);
     },
     onErrorCallback: () => {
-      transformBackendErrorsToForm(setError, error);
+      feedServerErrorsToForm(setError, error);
     },
   });
 

@@ -8,7 +8,7 @@ type FetchRequestInit = Omit<RequestInit, 'method'> & { method: HTTPMethods };
 type FetchConfig = GetConfig | MutationConfig;
 
 type GetConfig = {
-  url: RequestInfo;
+  url: URL | string;
   method?: Extract<HTTPMethods, 'GET'>;
   key: string;
   options?: {
@@ -18,7 +18,7 @@ type GetConfig = {
 };
 
 type MutationConfig = {
-  url: RequestInfo;
+  url: URL | string;
   method: Extract<HTTPMethods, 'DELETE' | 'PATCH' | 'POST' | 'PUT'>;
   /*
    * Perform side effect actions. To be used with mutation (patch, post, put, etc).
@@ -63,7 +63,7 @@ function fetchInitConfig(method: HTTPMethods = 'GET', body?: unknown): FetchRequ
 }
 
 /**
- * Custom hook intended to work similarly as useQuery but less bloated. One hook for both
+ * Custom hook intended to work similarly as useQuery. One hook for both
  */
 export function useFetch<TResponse = unknown, UError = unknown, VBody = FetchRequestInit['body']>(fetchConfig: FetchConfig) {
   const isLoading = useSignal<boolean>(false);
