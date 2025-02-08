@@ -1,5 +1,5 @@
 import { type JSX } from 'preact/compat';
-import { Button } from '@/components';
+import { Button } from '@/components/ui/button';
 import { buildURL, createAllListsKey, formatDateToISO, formatDateToLongFormat } from '@/helpers';
 import { useFetch } from '@/hooks';
 import { type List } from '@/responses';
@@ -58,7 +58,9 @@ export function Home(): JSX.Element {
     <div className="py-5">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* TODO: link not button */}
-        <Button text="+ Nouvelle liste" onClick={() => console.log('toto')} />
+        <Button size="lg" onClick={() => console.log('toto')}>
+          + Nouvelle liste
+        </Button>
         <div className="mx-auto max-w-2xl lg:mx-0 my-5">
           <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Mes listes de courses</h2>
         </div>

@@ -1,7 +1,7 @@
 import { type JSX } from 'preact/compat';
 import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
-import { buildURL, type FormErrors, feedServerErrorsToForm } from '@/helpers';
+import { buildURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
 import { useFetch } from '@/hooks';
 
 type Credentials = {
