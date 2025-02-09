@@ -73,13 +73,11 @@ export function ShoppingList(): JSX.Element {
   }
 
   return (
-    <div className="py-5">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:mx-0 my-5">
-          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">{listDetail.value?.title ?? 'Ma liste'}</h2>
-        </div>
-        {printLists(items.value ?? [])}
+    <>
+      <div className="mx-auto max-w-2xl lg:mx-0 my-5">
+        <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">{listDetail.value?.title ?? 'Ma liste'}</h2>
       </div>
-    </div>
+      {printLists(items.value ?? [])}
+    </>
   );
 }

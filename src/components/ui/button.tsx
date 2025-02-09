@@ -8,7 +8,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-green outline-green hover:outline-dotted text-base',
+        // default: 'bg-green outline-green hover:outline-dotted text-base',
+        //default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        default: 'bg-primary text-primary-foreground hover:outline-dotted',
         //TODO: do the other variants
         destructive: 'bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90',
         outline: 'border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground',

@@ -55,17 +55,15 @@ export function Home(): JSX.Element {
   });
 
   return (
-    <div className="py-5">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* TODO: link not button */}
-        <Button size="lg" onClick={() => console.log('toto')}>
-          + Nouvelle liste
-        </Button>
-        <div className="mx-auto max-w-2xl lg:mx-0 my-5">
-          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Mes listes de courses</h2>
-        </div>
-        {printLists(isLoading.value, allLists.value ?? [])}
+    <>
+      {/* TODO: link not button */}
+      <Button variant="default" size="lg" onClick={() => console.log('toto')}>
+        + Nouvelle liste
+      </Button>
+      <div className="mx-auto max-w-2xl lg:mx-0 my-5">
+        <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Mes listes de courses</h2>
       </div>
-    </div>
+      {printLists(isLoading.value, allLists.value ?? [])}
+    </>
   );
 }
