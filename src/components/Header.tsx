@@ -20,7 +20,7 @@ export function Header(): JSX.Element {
   ];
 
   return (
-    <header className="flex justify-end bg-crust">
+    <header className="bg-crust flex justify-end">
       <nav className="flex">
         {links.map((l) => (
           <a key={l.route} href={l.route} className={url === l.route ? 'bg-mantle p-3' : 'hover:bg-mantle p-3'}>

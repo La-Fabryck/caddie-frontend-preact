@@ -70,7 +70,7 @@ export function Login(): JSX.Element {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Mot de Passe</FormLabel>
               <FormControl>
                 <Input type="password" placeholder="Mot de passe super sécurisé" {...field} />
               </FormControl>

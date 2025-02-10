@@ -11,7 +11,7 @@ import {
   useFormContext,
   useFormState,
 } from 'react-hook-form';
-import { cn } from '@/lib/utils';
+import { classNameMerger } from '@/lib/utils';
 import { Label } from './label';
 
 const Form = FormProvider;
@@ -47,7 +47,7 @@ function FormItem({ className, ...props }: React.ComponentProps<'div'>) {
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div data-slot="form-item" className={cn('grid gap-2', className)} {...props} />
+      <div data-slot="form-item" className={classNameMerger('grid gap-2', className)} {...props} />
     </FormItemContext.Provider>
   );
 }
@@ -83,7 +83,7 @@ function FormLabel({ className, ...props }: React.ComponentProps<typeof LabelPri
     <Label
       data-slot="form-label"
       data-error={Boolean(error)}
-      className={cn('data-[error=true]:text-destructive', className)}
+      className={classNameMerger('data-[error=true]:text-destructive', className)}
       htmlFor={formItemId}
       {...props}
     />
@@ -107,7 +107,14 @@ function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
 function FormDescription({ className, ...props }: React.ComponentProps<'p'>) {
   const { formDescriptionId } = useFormField();
 
-  return <p data-slot="form-description" id={formDescriptionId} className={cn('text-muted-foreground text-sm', className)} {...props} />;
+  return (
+    <p
+      data-slot="form-description"
+      id={formDescriptionId}
+      className={classNameMerger('text-muted-foreground text-sm', className)}
+      {...props}
+    />
+  );
 }
 
 function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
@@ -119,7 +126,12 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
   }
 
   return (
-    <p data-slot="form-message" id={formMessageId} className={cn('text-destructive text-sm font-medium', className)} {...props}>
+    <p
+      data-slot="form-message"
+      id={formMessageId}
+      className={classNameMerger('text-destructive text-sm font-medium', className)}
+      {...props}
+    >
       {body}
     </p>
   );
@@ -132,7 +144,7 @@ function FormRootError({ className, ...props }: React.ComponentProps<'p'>) {
   }
 
   return (
-    <p data-slot="form-message" className={cn('text-destructive text-sm font-medium', className)} {...props}>
+    <p data-slot="form-message" className={classNameMerger('text-destructive text-sm font-medium', className)} {...props}>
       {errors.root.message}
     </p>
   );
