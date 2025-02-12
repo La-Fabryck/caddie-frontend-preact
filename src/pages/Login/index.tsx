@@ -1,7 +1,19 @@
 import { type JSX } from 'preact/compat';
 import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
-import { buildURL, type FormErrors, feedServerErrorsToForm } from '@/helpers';
+import {
+  Button,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  FormRootError,
+  Input,
+} from '@/components/ui';
+import { buildURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
 import { useFetch } from '@/hooks';
 
 type Credentials = {
@@ -13,7 +25,7 @@ type LoginErrors = FormErrors<Credentials>;
 
 export function Login(): JSX.Element {
   const location = useLocation();
-  const { handleSubmit, formState, register, setError } = useForm<Credentials>();
+  const form = useForm<Credentials>();
   const {
     executeRequest: handleLogin,
     isLoading,
@@ -26,28 +38,49 @@ export function Login(): JSX.Element {
       location.route('/', true);
     },
     onErrorCallback: () => {
-      feedServerErrorsToForm(setError, error);
+      feedServerErrorsToForm(form.setError, error);
     },
   });
 
+  if (isLoading.value) {
+    return <p>Loading...</p>;
+  }
+
   return (
-    <>
-      <h1>Mon super formulaire des familles</h1>
-      {isLoading.value && <p>Loading...</p>}
-      <br />
-      <br />
-      <form onSubmit={handleSubmit(handleLogin)}>
-        {formState.errors.root && <p role="alert">{formState.errors.root.message}</p>}
-        {formState.errors.email && <p role="alert">{formState.errors.email.message}</p>}
-        <label htmlFor="email">Email</label>
-        <input id="email" type="email" {...register('email', { required: true })} />
-        <br />
-        {formState.errors.password && <p role="alert">Password is required</p>}
-        <label htmlFor="password">Password</label>
-        <input id="password" type="password" {...register('password', { required: true })} />
-        <br />
-        <input type="submit" />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-8">
+        <FormRootError />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="ton@email.com" {...field} />
+              </FormControl>
+              <FormDescription>Rentre ton email.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {form.formState.errors.password && <p role="alert">{form.formState.errors.password.message}</p>}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Mot de Passe</FormLabel>
+              <FormControl>
+                <Input type="password" placeholder="Mot de passe super sécurisé" {...field} />
+              </FormControl>
+              <FormDescription>Ton mot de passe personnel.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
       </form>
-    </>
+    </Form>
   );
 }

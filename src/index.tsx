@@ -11,12 +11,16 @@ export function App() {
       <CacheProvider>
         <Header />
         <main>
-          <Router>
-            <ProtectedRoute path="/" component={Home} />
-            <ProtectedRoute path="/list/:shoppingListId" component={ShoppingList} />
-            <Route default component={NotFound} />
-            <Route path="/login" component={Login} />
-          </Router>
+          <div className="py-5">
+            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+              <Router>
+                <ProtectedRoute path="/" component={Home} />
+                <ProtectedRoute path="/list/:shoppingListId" component={ShoppingList} />
+                <Route default component={NotFound} />
+                <Route path="/login" component={Login} />
+              </Router>
+            </div>
+          </div>
         </main>
       </CacheProvider>
     </LocationProvider>
