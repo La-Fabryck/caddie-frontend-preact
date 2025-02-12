@@ -2,7 +2,7 @@ import { render } from 'preact';
 import { LocationProvider, Route, Router } from 'preact-iso';
 import { Header, ProtectedRoute } from './components';
 import { CacheProvider } from './hooks';
-import { Home, Login, NotFound, ShoppingList } from './pages';
+import { CreateList, Home, Login, NotFound, ShoppingList } from './pages';
 import './index.css';
 
 export function App() {
@@ -15,6 +15,7 @@ export function App() {
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
               <Router>
                 <ProtectedRoute path="/" component={Home} />
+                <ProtectedRoute path="/list/create" component={CreateList} />
                 <ProtectedRoute path="/list/:shoppingListId" component={ShoppingList} />
                 <Route default component={NotFound} />
                 <Route path="/login" component={Login} />
