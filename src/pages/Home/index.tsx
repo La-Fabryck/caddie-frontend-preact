@@ -57,8 +57,7 @@ export function Home(): JSX.Element {
 
   return (
     <>
-      {/* TODO: url to new page */}
-      <a className={buttonVariants({ variant: 'default', size: 'lg' })} href="/">
+      <a className={buttonVariants({ variant: 'default', size: 'lg' })} href="/list/create">
         <DiamondPlus />
         Nouvelle liste
       </a>

@@ -79,7 +79,7 @@ export function Login(): JSX.Element {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">S&apos;authentifier</Button>
       </form>
     </Form>
   );
