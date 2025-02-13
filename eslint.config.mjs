@@ -99,7 +99,7 @@ export default tseslint.config(
 
       // No magic numbers
       'no-magic-numbers': 'off',
-      '@typescript-eslint/no-magic-numbers': 'error',
+      '@typescript-eslint/no-magic-numbers': ['error', { ignore: [0] }], // ignore array index
 
       // Disallow empty functions
       'no-empty-function': 'off',

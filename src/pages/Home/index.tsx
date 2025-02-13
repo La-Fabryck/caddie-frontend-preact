@@ -1,7 +1,7 @@
 import { DiamondPlus } from 'lucide-preact';
 import { type JSX } from 'preact/compat';
 import { buttonVariants } from '@/components/ui/button';
-import { buildURL, createAllListsKey, formatDateToISO, formatDateToLongFormat } from '@/helpers';
+import { buildApiURL, createAllListsKey, formatDateToISO, formatDateToLongFormat } from '@/helpers';
 import { useFetch } from '@/hooks';
 import { type List } from '@/responses';
 
@@ -51,7 +51,7 @@ function printLists(isLoading: boolean, lists: List[]): JSX.Element {
 
 export function Home(): JSX.Element {
   const { data: allLists, isLoading } = useFetch<List[]>({
-    url: buildURL('/list'),
+    url: buildApiURL('/list'),
     key: createAllListsKey(),
   });
 
