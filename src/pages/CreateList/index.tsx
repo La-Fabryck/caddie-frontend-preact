@@ -2,7 +2,7 @@ import { type JSX } from 'preact/compat';
 import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
 import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Input } from '@/components/ui';
-import { buildURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
+import { buildApiURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
 import { useFetch } from '@/hooks';
 import { type ListWithSubs } from '@/responses/createList';
 
@@ -14,7 +14,7 @@ type CreateList = {
 type ListErrors = FormErrors<CreateList>;
 
 export function CreateList(): JSX.Element {
-  const location = useLocation();
+  const { route } = useLocation();
   const form = useForm<CreateList>();
   const {
     executeRequest: handleLogin,
@@ -22,10 +22,10 @@ export function CreateList(): JSX.Element {
     error,
     data,
   } = useFetch<ListWithSubs, ListErrors, CreateList>({
-    url: buildURL('/list'),
+    url: buildApiURL('/list'),
     method: 'POST',
     onSuccessCallback: () => {
-      location.route(`/list/${data.value?.id}`, true);
+      route(`/list/${data.value?.id}`, true);
     },
     onErrorCallback: () => {
       feedServerErrorsToForm(form.setError, error);

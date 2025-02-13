@@ -13,7 +13,7 @@ import {
   FormRootError,
   Input,
 } from '@/components/ui';
-import { buildURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
+import { buildApiURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
 import { useFetch } from '@/hooks';
 
 type Credentials = {
@@ -31,7 +31,7 @@ export function Login(): JSX.Element {
     isLoading,
     error,
   } = useFetch<null, LoginErrors, Credentials>({
-    url: buildURL('/authentication/login'),
+    url: buildApiURL('/authentication/login'),
     method: 'POST',
     onSuccessCallback: () => {
       window.localStorage.setItem('isAuthenticated', '1');
