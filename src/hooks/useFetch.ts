@@ -32,6 +32,8 @@ type MutationConfig = {
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const TTL_DEFAULT = 5 * 60 * 1000;
 
+const UNAUTHORIZED = 401;
+
 /**
  * Verify if the mehod is safe or not. Same behaviour as the fetch, default is GET.
  *
@@ -123,6 +125,12 @@ export function useFetch<TResponse = unknown, UError = unknown, VBody = FetchReq
 
       if ('onErrorCallback' in fetchConfig && typeof fetchConfig.onErrorCallback === 'function') {
         fetchConfig.onErrorCallback();
+      }
+
+      // TODO: default cleanup function ?
+      // when unauthorized, it means no auth cookie, clear the localStorage
+      if (response.status === UNAUTHORIZED) {
+        window.localStorage.clear();
       }
     }
   }

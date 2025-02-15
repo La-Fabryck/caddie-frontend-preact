@@ -4,7 +4,7 @@ import { type FieldValues, type Path, type UseFormSetError } from 'react-hook-fo
 type ErrorMessage = { message: string };
 type DefaultKeys = `root.${string}` | 'root';
 
-type ErrorKeys<T> = keyof T | DefaultKeys;
+type ErrorKeys<T> = Path<T> | DefaultKeys;
 
 /**
  * Helper to type backend errors and add a "root" key
@@ -12,18 +12,36 @@ type ErrorKeys<T> = keyof T | DefaultKeys;
 export type FormErrors<T> = Record<ErrorKeys<T>, ErrorMessage[]>;
 
 /**
- * Transforms server errors to useForm compatible errors
+ * Transforms server errors to useForm compatible errors and intialize them
+ *
+ * The error from the back-end and are structured such as :
+ *
+ * {
+ *    "name":[
+ *      {"message":"ITEM_NAME"}
+ *    ]
+ * }
+ *
+ * It loops over the keys, finds the message key and find the corresponding errorMessage
+ *
+ * const itemErrorMessages = {
+ *   ITEM_NAME: "message d'erreur",
+ * };
  *
  * @param setError useForm's setError
  * @param error the raw server error
+ * @param errorMessages the key value error messages
  */
 export function feedServerErrorsToForm<T extends FieldValues>(
   setError: UseFormSetError<T>,
-  error: Signal<Record<Path<T> | DefaultKeys, ErrorMessage[]> | null>,
+  error: Signal<Record<ErrorKeys<T>, ErrorMessage[]> | null>,
+  errorMessages: Record<string, string>,
 ) {
   Object.entries(error.value ?? {}).forEach(([key, value]) => {
-    setError(key as Path<T> | DefaultKeys, {
-      message: value.find(({ message }) => message != null)?.message ?? 'DEFAULT MESSAGE',
+    const errorMessageKey = value.find(({ message }) => message != null)?.message;
+    const message = errorMessageKey != null ? errorMessages[errorMessageKey] : 'DEFAULT MESSAGE';
+    setError(key as ErrorKeys<T>, {
+      message,
     });
   });
 }

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Input } from '@/components/ui';
 import { buildApiURL, createItemKey, feedServerErrorsToForm, type FormErrors } from '@/helpers';
 import { useFetch } from '@/hooks';
+import { itemErrorMessages } from '@/messages';
 import { type Item } from '@/responses';
 
 type CreateItem = {
@@ -32,7 +33,7 @@ export function CreateItem(): JSX.Element {
       route(`/list/${shoppingListId}`, true);
     },
     onErrorCallback: () => {
-      feedServerErrorsToForm(form.setError, error);
+      feedServerErrorsToForm(form.setError, error, itemErrorMessages);
     },
   });
 
@@ -42,7 +43,7 @@ export function CreateItem(): JSX.Element {
 
   return (
     <>
-      <h1>🛒 Ajoute un nouvel objet 🛒</h1>
+      <h1>🛒 Ajoute un nouvel article 🛒</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(addItem)} className="space-y-8">
           <FormField
@@ -50,11 +51,11 @@ export function CreateItem(): JSX.Element {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nom de l&apos;objet</FormLabel>
+                <FormLabel>Nom de l&apos;article</FormLabel>
                 <FormControl>
                   <Input placeholder="🍔 ou 🍫" {...field} />
                 </FormControl>
-                <FormDescription>Tu veux acheter quoi encore ??</FormDescription>
+                <FormDescription>Tu veux acheter quoi encore 🤌 ⁉️</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

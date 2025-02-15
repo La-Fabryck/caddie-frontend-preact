@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Input } from '@/components/ui';
 import { buildApiURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
 import { useFetch } from '@/hooks';
+import { listErrorMessages } from '@/messages';
 import { type ListWithSubs } from '@/responses/createList';
 
 type CreateList = {
@@ -28,7 +29,7 @@ export function CreateList(): JSX.Element {
       route(`/list/${data.value?.id}`, true);
     },
     onErrorCallback: () => {
-      feedServerErrorsToForm(form.setError, error);
+      feedServerErrorsToForm(form.setError, error, listErrorMessages);
     },
   });
 
