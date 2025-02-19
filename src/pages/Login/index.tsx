@@ -15,6 +15,7 @@ import {
 } from '@/components/ui';
 import { buildApiURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
 import { useFetch } from '@/hooks';
+import { loginErrorMessages } from '@/messages';
 
 type Credentials = {
   email: string;
@@ -38,7 +39,7 @@ export function Login(): JSX.Element {
       location.route('/', true);
     },
     onErrorCallback: () => {
-      feedServerErrorsToForm(form.setError, error);
+      feedServerErrorsToForm(form.setError, error, loginErrorMessages);
     },
   });
 
