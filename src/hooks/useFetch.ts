@@ -112,7 +112,7 @@ export function useFetch<TResponse = unknown, UError = unknown, VBody = FetchReq
         setCache(fetchConfig.key, contentResponse, fetchConfig.options?.ttl ?? TTL_DEFAULT);
       }
 
-      if ('onSuccessCallback' in fetchConfig && typeof fetchConfig.onSuccessCallback === 'function') {
+      if ('onSuccessCallback' in fetchConfig) {
         fetchConfig.onSuccessCallback();
       }
     } else {
@@ -123,7 +123,7 @@ export function useFetch<TResponse = unknown, UError = unknown, VBody = FetchReq
         data.value = null;
       });
 
-      if ('onErrorCallback' in fetchConfig && typeof fetchConfig.onErrorCallback === 'function') {
+      if ('onErrorCallback' in fetchConfig) {
         fetchConfig.onErrorCallback();
       }
 
