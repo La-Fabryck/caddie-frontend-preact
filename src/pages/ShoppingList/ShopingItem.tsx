@@ -12,6 +12,7 @@ export function ShoppingItem({ item: itemInitalValue }: { item: Item }): JSX.Ele
     onSuccessCallback: () => {
       if (updatedItem.value != null) {
         item.value = updatedItem.value;
+        //TODO: update global state or invalidate state ? Pointless if SSE ?
       }
     },
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -24,7 +25,7 @@ export function ShoppingItem({ item: itemInitalValue }: { item: Item }): JSX.Ele
     }
   });
 
-  function handleOnClick(event: JSX.TargetedMouseEvent<HTMLInputElement>, initValue: Item): void {
+  function handleOnChange(event: JSX.TargetedEvent<HTMLInputElement, Event>, initValue: Item): void {
     const isChecked = event.currentTarget.checked;
 
     // Call the debounced function
@@ -49,7 +50,7 @@ export function ShoppingItem({ item: itemInitalValue }: { item: Item }): JSX.Ele
               id={item.value.id}
               aria-labelledby={`label-${item.value.id}`}
               checked={item.value.isInCart}
-              onClick={(event) => handleOnClick(event, item.value)}
+              onChange={(event) => handleOnChange(event, item.value)}
             />
             <svg
               className="stroke-crust pointer-events-none absolute ml-1 hidden h-4 w-3 outline-hidden peer-checked:block"
