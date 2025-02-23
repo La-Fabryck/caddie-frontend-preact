@@ -1,8 +1,10 @@
+import { type DateString } from '@/helpers';
+
 type List = {
   id: string;
   title: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: DateString;
+  updatedAt: DateString;
 };
 
 type Subscriber = {

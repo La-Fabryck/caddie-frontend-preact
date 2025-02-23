@@ -12,7 +12,7 @@ function printLists(itemsSignal: Signal<Item[] | null>): JSX.Element {
   const items = itemsSignal.value ?? [];
 
   if (items.length === 0) {
-    return <p>Pas d&apos;items trouvés</p>;
+    return <p>Pas d&apos;articles trouvés</p>;
   }
 
   return (

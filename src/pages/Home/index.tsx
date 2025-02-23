@@ -16,14 +16,14 @@ function printLists(isLoading: boolean, lists: List[]): JSX.Element {
 
   return (
     <ul>
-      {lists.map((l) => (
-        <li key={l.id}>
-          <a href={`/list/${l.id}`} className="bg-surface0 hover:bg-surface1 my-2 flex justify-between gap-x-6 p-5">
+      {lists.map((list) => (
+        <li key={list.id}>
+          <a href={`/list/${list.id}`} className="bg-surface0 hover:bg-surface1 my-2 flex justify-between gap-x-6 p-5">
             <div className="flex min-w-0 gap-x-4">
               <div className="min-w-0 flex-auto">
-                <p className="text-lg font-bold">{l.title}</p>
+                <p className="text-lg font-bold">{list.title}</p>
                 <p className="mt-1 truncate text-xs/5">
-                  Créé le <time dateTime={formatDateToISO(l.createdAt)}>{formatDateToLongFormat(l.createdAt)}</time>
+                  Créé le <time dateTime={formatDateToISO(list.createdAt)}>{formatDateToLongFormat(list.createdAt)}</time>
                 </p>
               </div>
             </div>
@@ -38,7 +38,7 @@ function printLists(isLoading: boolean, lists: List[]): JSX.Element {
               </div>
               <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
                 <p className="mt-1 text-xs/5">
-                  Modifié le <time dateTime={formatDateToISO(l.updatedAt)}>{formatDateToLongFormat(l.updatedAt)}</time>
+                  Modifié le <time dateTime={formatDateToISO(list.updatedAt)}>{formatDateToLongFormat(list.updatedAt)}</time>
                 </p>
               </div>
             </div>

@@ -1,6 +1,8 @@
+import { type DateString } from '@/helpers';
+
 export type List = {
   id: string;
   title: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: DateString;
+  updatedAt: DateString;
 };
