@@ -52,10 +52,10 @@ export default tseslint.config(
 
     settings: {
       // https://www.npmjs.com/package/eslint-import-resolver-typescript#configuration
-      'import/resolver-next': [
+      'import-x/resolver-next': [
         createTypeScriptImportResolver({
           alwaysTryTypes: true,
-          project: ['<root>/tsconfig.json', '<root>/tsconfig.app.json', '<root>/tsconfig.node.json'],
+          project: ['tsconfig.json', 'tsconfig.app.json', 'tsconfig.node.json'],
           extensions: ['.js', '.jsx', '.ts', '.tsx'],
         }),
       ],
