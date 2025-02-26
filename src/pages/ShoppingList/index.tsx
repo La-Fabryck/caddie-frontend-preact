@@ -1,7 +1,8 @@
-import { effect, type Signal } from '@preact/signals';
+import { effect, type Signal, useSignal } from '@preact/signals';
 import { DiamondPlus } from 'lucide-preact';
 import { type JSX } from 'preact/compat';
 import { useLocation, useRoute } from 'preact-iso';
+import { type Action, ToggleActionGroup } from '@/components/toggle-action';
 import { buttonVariants } from '@/components/ui';
 import { buildApiURL, createItemKey, createListKey } from '@/helpers';
 import { useFetch } from '@/hooks';
@@ -29,6 +30,8 @@ function printLists(itemsSignal: Signal<Item[] | null>): JSX.Element {
 }
 
 export function ShoppingList(): JSX.Element {
+  const action = useSignal<Action>('selection');
+
   const {
     params: { shoppingListId },
   } = useRoute();
@@ -56,6 +59,7 @@ export function ShoppingList(): JSX.Element {
 
   return (
     <>
+      <ToggleActionGroup action={action} />
       <div className="mx-auto my-5 max-w-2xl lg:mx-0">
         <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">{listDetail.value?.title ?? 'Ma liste'}</h2>
       </div>
@@ -63,7 +67,9 @@ export function ShoppingList(): JSX.Element {
         <DiamondPlus />
         Ajoute un objet
       </a>
-      {printLists(items)}
+      {action.value === 'selection' && printLists(items)}
+      {action.value === 'edition' && printLists(items)}
+      {action.value === 'deletion' && printLists(items)}
     </>
   );
 }
