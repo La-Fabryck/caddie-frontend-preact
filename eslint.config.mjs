@@ -3,7 +3,7 @@ import eslint from '@eslint/js';
 import * as tsParser from '@typescript-eslint/parser';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import eslintPluginImportX from 'eslint-plugin-import-x';
-import jsxA11y from 'eslint-plugin-jsx-a11y'
+import jsxA11y from 'eslint-plugin-jsx-a11y';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
@@ -25,8 +25,6 @@ export default tseslint.config(
   eslintPluginPrettierRecommended,
   {
     plugins: {
-      // react,
-      //@ts-expect-error: https://github.com/facebook/react/issues/30119
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       'unused-imports': unusedImports,
@@ -60,9 +58,7 @@ export default tseslint.config(
         }),
       ],
 
-      'import-x/ignore': [
-        '\.(scss|less|css)$'
-      ],
+      'import-x/ignore': ['\.(scss|less|css)$'],
 
       react: {
         version: 'detect',
@@ -70,7 +66,6 @@ export default tseslint.config(
     },
 
     rules: {
-
       // ---> react specifics
       'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
@@ -81,15 +76,15 @@ export default tseslint.config(
       '@typescript-eslint/no-misused-promises': [
         'error',
         {
-          'checksVoidReturn': {
+          checksVoidReturn: {
             // Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns void.
-            'attributes': false
-          }
-        }
+            attributes: false,
+          },
+        },
       ],
-      // <--- 
+      // <---
 
-      // @typescript-eslint rules -----> 
+      // @typescript-eslint rules ----->
 
       '@typescript-eslint/interface-name-prefix': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
@@ -112,7 +107,7 @@ export default tseslint.config(
       'default-param-last': 'off',
       '@typescript-eslint/default-param-last': 'error',
 
-      // Require the Record type 
+      // Require the Record type
       '@typescript-eslint/consistent-indexed-object-style': 'error',
 
       // Require each enum member value to be explicitly initialized
@@ -130,10 +125,13 @@ export default tseslint.config(
 
       // Disallow classes used as namespaces.
       // Override typescript-eslint strict to allow empty Module classes with decorators
-      '@typescript-eslint/no-extraneous-class': ['error', {
-        /** Whether to allow extraneous classes that include a decorator. */
-        allowWithDecorator: true,
-      }],
+      '@typescript-eslint/no-extraneous-class': [
+        'error',
+        {
+          /** Whether to allow extraneous classes that include a decorator. */
+          allowWithDecorator: true,
+        },
+      ],
 
       // Enforce template literal expressions to be of `string` type
       // Override typescript-eslint strictTyped to remove this rule.
@@ -141,20 +139,20 @@ export default tseslint.config(
 
       // Disallow unused variables.
       // Override typescript-eslint recommended config to allow unused variables starting with _
-      "@typescript-eslint/no-unused-vars": [
-        "error",
+      '@typescript-eslint/no-unused-vars': [
+        'error',
         {
-          "args": "all",
-          "argsIgnorePattern": "^_",
-          "caughtErrors": "all",
-          "caughtErrorsIgnorePattern": "^_",
-          "destructuredArrayIgnorePattern": "^_",
-          "varsIgnorePattern": "^_",
-          "ignoreRestSiblings": true
-        }
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
       ],
 
-      // <----- @typescript-eslint rules 
+      // <----- @typescript-eslint rules
 
       // eslint rules ----->
 
@@ -175,7 +173,7 @@ export default tseslint.config(
       'default-case-last': 'error',
 
       // Disallow assignments that can lead to race conditions due to usage of `await` or `yield`
-      'require-atomic-updates': ['error', { 'allowProperties': true }],
+      'require-atomic-updates': ['error', { allowProperties: true }],
 
       // Enforce a maximum number of parameters in function definitions
       'max-params': ['error', 3],
@@ -219,7 +217,7 @@ export default tseslint.config(
       // Disallow unnecessary calls to `.call()` and `.apply()`
       'no-useless-call': 'error',
 
-      // <----- eslint rules 
+      // <----- eslint rules
 
       // Style imports :
 
