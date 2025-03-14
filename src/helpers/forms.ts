@@ -12,7 +12,7 @@ type ErrorKeys<T> = Path<T> | DefaultKeys;
 export type FormErrors<T> = Record<ErrorKeys<T>, ErrorMessage[]>;
 
 /**
- * Transforms server errors to useForm compatible errors and intialize them
+ * Transforms server errors to useForm compatible errors and initialize them
  *
  * The error from the back-end and are structured such as :
  *
@@ -25,7 +25,7 @@ export type FormErrors<T> = Record<ErrorKeys<T>, ErrorMessage[]>;
  * It loops over the keys, finds the message key and find the corresponding errorMessage
  *
  * const itemErrorMessages = {
- *   ITEM_NAME: "message d'erreur",
+ *   ITEM_NAME: "error message",
  * };
  *
  * @param setError useForm's setError

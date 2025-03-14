@@ -1,5 +1,6 @@
 import { DiamondPlus } from 'lucide-preact';
-import { type JSX } from 'preact/compat';
+import { type JSX } from 'preact';
+import { Loader } from '@/components';
 import { buttonVariants } from '@/components/ui/button';
 import { buildApiURL, createAllListsKey, formatDateToISO, formatDateToLongFormat } from '@/helpers';
 import { useFetch } from '@/hooks';
@@ -7,7 +8,7 @@ import { type List } from '@/responses';
 
 function printLists(isLoading: boolean, lists: List[]): JSX.Element {
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   if (!lists.length) {

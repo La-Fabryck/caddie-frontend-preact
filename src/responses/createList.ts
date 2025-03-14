@@ -5,6 +5,7 @@ type List = {
   title: string;
   createdAt: DateString;
   updatedAt: DateString;
+  subscribers: Subscriber[];
 };
 
 type Subscriber = {
@@ -14,4 +15,4 @@ type Subscriber = {
   userId: string;
 };
 
-export type ListWithSubs = List & { subscribers: Subscriber[] };
+export type ListWithSubs = List;
