@@ -1,5 +1,5 @@
 import { effect, useSignal } from '@preact/signals';
-import { type JSX } from 'preact/compat';
+import { type JSX } from 'preact';
 import { Route, type RouteProps, useLocation } from 'preact-iso';
 
 function isAuthenticated(): boolean {

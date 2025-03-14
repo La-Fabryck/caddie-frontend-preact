@@ -108,10 +108,6 @@ export default tseslint.config(
       // Enforce using a particular method signature syntax
       '@typescript-eslint/method-signature-style': 'error',
 
-      // Enforce that class methods utilize `this`
-      'class-methods-use-this': 'off',
-      '@typescript-eslint/class-methods-use-this': 'error',
-
       // Enforce default parameters to be last
       'default-param-last': 'off',
       '@typescript-eslint/default-param-last': 'error',
@@ -142,6 +138,21 @@ export default tseslint.config(
       // Enforce template literal expressions to be of `string` type
       // Override typescript-eslint strictTyped to remove this rule.
       '@typescript-eslint/restrict-template-expressions': 'off',
+
+      // Disallow unused variables.
+      // Override typescript-eslint recommended config to allow unused variables starting with _
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          "args": "all",
+          "argsIgnorePattern": "^_",
+          "caughtErrors": "all",
+          "caughtErrorsIgnorePattern": "^_",
+          "destructuredArrayIgnorePattern": "^_",
+          "varsIgnorePattern": "^_",
+          "ignoreRestSiblings": true
+        }
+      ],
 
       // <----- @typescript-eslint rules 
 

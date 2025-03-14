@@ -1,11 +1,12 @@
-import { type JSX } from 'preact/compat';
+import { type JSX } from 'preact';
 import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
+import { Loader } from '@/components';
 import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Input } from '@/components/ui';
 import { buildApiURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
 import { useFetch } from '@/hooks';
 import { listErrorMessages } from '@/messages';
-import { type ListWithSubs } from '@/responses/createList';
+import { type ListWithSubs } from '@/responses';
 
 type CreateList = {
   title: string;
@@ -34,7 +35,7 @@ export function CreateList(): JSX.Element {
   });
 
   if (isLoading.value) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   return (

@@ -1,6 +1,7 @@
-import { type JSX } from 'preact/compat';
+import { type JSX } from 'preact';
 import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
+import { Loader } from '@/components';
 import {
   Button,
   Form,
@@ -25,7 +26,7 @@ type Credentials = {
 type LoginErrors = FormErrors<Credentials>;
 
 export function Login(): JSX.Element {
-  const location = useLocation();
+  const { route } = useLocation();
   const form = useForm<Credentials>();
   const {
     executeRequest: handleLogin,
@@ -36,7 +37,7 @@ export function Login(): JSX.Element {
     method: 'POST',
     onSuccessCallback: () => {
       window.localStorage.setItem('isAuthenticated', '1');
-      location.route('/', true);
+      route('/', true);
     },
     onErrorCallback: () => {
       feedServerErrorsToForm(form.setError, error, loginErrorMessages);
@@ -44,7 +45,7 @@ export function Login(): JSX.Element {
   });
 
   if (isLoading.value) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   return (

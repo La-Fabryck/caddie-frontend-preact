@@ -1,5 +1,6 @@
 # v1 Bare minimum
 
+- Refactor useFetch (useFetch & useMutation)
 - Display the list (Basics done)
 - Handle form errors
 - Create a list

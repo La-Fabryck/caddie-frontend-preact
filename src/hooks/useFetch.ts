@@ -2,6 +2,8 @@ import { batch, useSignal } from '@preact/signals';
 import { useEffect } from 'preact/hooks';
 import { useCache } from './useCache';
 
+//TODO: Refactor useFetch & useMutation. Easier type annotation and default values
+
 type HTTPMethods = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE';
 type FetchRequestInit = Omit<RequestInit, 'method'> & { method: HTTPMethods };
 
@@ -129,14 +131,19 @@ export function useFetch<TResponse = unknown, UError = unknown, VBody = FetchReq
 
       // TODO: default cleanup function ?
       // when unauthorized, it means no auth cookie, clear the localStorage
+      // use session storage ?
       if (response.status === UNAUTHORIZED) {
         window.localStorage.clear();
       }
     }
   }
 
-  function invalidate(key: GetConfig['key']) {
-    deleteCache(key);
+  function invalidate() {
+    if ('key' in fetchConfig && isSafeMethod(fetchConfig.method)) {
+      deleteCache(fetchConfig.key);
+    } else {
+      throw new Error('Not supported with unsafe methods');
+    }
   }
 
   useEffect(() => {

@@ -1,11 +1,12 @@
-import { type JSX } from 'preact/compat';
+import { type JSX } from 'preact';
 import { useLocation, useRoute } from 'preact-iso';
 import { useForm } from 'react-hook-form';
+import { Loader } from '@/components';
 import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Input } from '@/components/ui';
-import { buildApiURL, createItemKey, feedServerErrorsToForm, type FormErrors } from '@/helpers';
+import { buildApiURL, createItemKey, createListKey, feedServerErrorsToForm, type FormErrors } from '@/helpers';
 import { useFetch } from '@/hooks';
 import { itemErrorMessages } from '@/messages';
-import { type Item } from '@/responses';
+import { type Item, type List } from '@/responses';
 
 type CreateItem = {
   name: string;
@@ -20,16 +21,25 @@ export function CreateItem(): JSX.Element {
   } = useRoute();
   const form = useForm<CreateItem>();
 
+  const { data: listDetail, isLoading: isLoadingList } = useFetch<List>({
+    url: buildApiURL(`/list/${shoppingListId}`),
+    key: createListKey(shoppingListId),
+  });
+
+  const { invalidate: invalidateItems } = useFetch<Item[]>({
+    url: buildApiURL(`/list/${shoppingListId}/items`),
+    key: createItemKey(shoppingListId),
+  });
+
   const {
     executeRequest: addItem,
-    isLoading,
+    isLoading: isLoadingAddItem,
     error,
-    invalidate,
   } = useFetch<Item, ListErrors, CreateItem>({
     url: buildApiURL(`/list/${shoppingListId}/items`),
     method: 'POST',
     onSuccessCallback: () => {
-      invalidate(createItemKey(shoppingListId));
+      invalidateItems();
       route(`/list/${shoppingListId}`, true);
     },
     onErrorCallback: () => {
@@ -37,13 +47,13 @@ export function CreateItem(): JSX.Element {
     },
   });
 
-  if (isLoading.value) {
-    return <p>Loading...</p>;
+  if (isLoadingAddItem.value || isLoadingList.value) {
+    return <Loader />;
   }
 
   return (
     <>
-      <h1>🛒 Ajoute un nouvel article 🛒</h1>
+      <h1>🛒 Ajoute un nouvel article à {listDetail.value?.title} 🛒</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(addItem)} className="space-y-8">
           <FormField
