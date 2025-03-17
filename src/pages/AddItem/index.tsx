@@ -70,7 +70,9 @@ export function CreateItem(): JSX.Element {
               </FormItem>
             )}
           />
-          <Button type="submit">Ajouter</Button>
+          <Button className="font-semibold" type="submit">
+            Ajouter
+          </Button>
         </form>
       </Form>
     </>

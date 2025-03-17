@@ -43,7 +43,12 @@ function ShoppingListDeletion({ items, invalidate, action }: ShoppingItemsProps)
 
   return (
     <>
-      <Button variant={'destructive'} disabled={itemsToDelete.value.length === 0} onClick={async () => onClick(itemsToDelete.value)}>
+      <Button
+        className="font-semibold"
+        variant={'destructive'}
+        disabled={itemsToDelete.value.length === 0}
+        onClick={async () => onClick(itemsToDelete.value)}
+      >
         <Trash2 />
         {computeDeletionButtonText(itemsToDelete.value.length)}
       </Button>

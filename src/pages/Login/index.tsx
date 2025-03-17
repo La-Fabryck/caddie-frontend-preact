@@ -81,7 +81,9 @@ export function Login(): JSX.Element {
             </FormItem>
           )}
         />
-        <Button type="submit">S&apos;authentifier</Button>
+        <Button className="font-semibold" type="submit">
+          S&apos;authentifier
+        </Button>
       </form>
     </Form>
   );

@@ -41,7 +41,10 @@ export function ShoppingListContent({ action, shoppingListId }: ShoppingListCont
     case 'selection':
       return (
         <>
-          <a className={buttonVariants({ variant: 'default', size: 'lg' })} href={`/list/${shoppingListId}/items/add`}>
+          <a
+            className={buttonVariants({ variant: 'default', size: 'lg', className: 'font-semibold' })}
+            href={`/list/${shoppingListId}/items/add`}
+          >
             <DiamondPlus />
             Ajoute un article
           </a>

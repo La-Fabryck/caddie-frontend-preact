@@ -71,7 +71,9 @@ export function CreateList(): JSX.Element {
               </FormItem>
             )}
           />
-          <Button type="submit">Créer</Button>
+          <Button className="font-semibold" type="submit">
+            Créer
+          </Button>
         </form>
       </Form>
     </>
