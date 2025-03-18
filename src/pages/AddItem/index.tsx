@@ -1,3 +1,4 @@
+import { Loader2 } from 'lucide-preact';
 import { type JSX } from 'preact';
 import { useLocation, useRoute } from 'preact-iso';
 import { useForm } from 'react-hook-form';
@@ -47,7 +48,7 @@ export function CreateItem(): JSX.Element {
     },
   });
 
-  if (isLoadingAddItem.value || isLoadingList.value) {
+  if (isLoadingList.value) {
     return <Loader />;
   }
 
@@ -70,8 +71,14 @@ export function CreateItem(): JSX.Element {
               </FormItem>
             )}
           />
-          <Button className="font-semibold" type="submit">
-            Ajouter
+          <Button className="font-semibold" type="submit" disabled={isLoadingAddItem.value}>
+            {isLoadingAddItem.value ? (
+              <>
+                <Loader2 className="animate-spin" /> Attendez
+              </>
+            ) : (
+              'Ajouter'
+            )}
           </Button>
         </form>
       </Form>

@@ -1,7 +1,7 @@
+import { Loader2 } from 'lucide-preact';
 import { type JSX } from 'preact';
 import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
-import { Loader } from '@/components';
 import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Input } from '@/components/ui';
 import { buildApiURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
 import { useFetch } from '@/hooks';
@@ -33,10 +33,6 @@ export function CreateList(): JSX.Element {
       feedServerErrorsToForm(form.setError, error, listErrorMessages);
     },
   });
-
-  if (isLoading.value) {
-    return <Loader />;
-  }
 
   return (
     <>
@@ -71,8 +67,14 @@ export function CreateList(): JSX.Element {
               </FormItem>
             )}
           />
-          <Button className="font-semibold" type="submit">
-            Créer
+          <Button className="font-semibold" type="submit" disabled={isLoading.value}>
+            {isLoading.value ? (
+              <>
+                <Loader2 className="animate-spin" /> Attendez
+              </>
+            ) : (
+              'Créer'
+            )}
           </Button>
         </form>
       </Form>

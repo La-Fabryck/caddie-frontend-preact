@@ -1,7 +1,7 @@
+import { Loader2 } from 'lucide-preact';
 import { type JSX } from 'preact';
 import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
-import { Loader } from '@/components';
 import {
   Button,
   Form,
@@ -44,10 +44,6 @@ export function Login(): JSX.Element {
     },
   });
 
-  if (isLoading.value) {
-    return <Loader />;
-  }
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-8">
@@ -80,8 +76,14 @@ export function Login(): JSX.Element {
             </FormItem>
           )}
         />
-        <Button className="font-semibold" type="submit">
-          S&apos;authentifier
+        <Button className="font-semibold" type="submit" disabled={isLoading.value}>
+          {isLoading.value ? (
+            <>
+              <Loader2 className="animate-spin" /> Attendez
+            </>
+          ) : (
+            "S'authentifier"
+          )}
         </Button>
       </form>
     </Form>
