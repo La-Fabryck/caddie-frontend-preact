@@ -66,7 +66,6 @@ export function Login(): JSX.Element {
             </FormItem>
           )}
         />
-        {form.formState.errors.password && <p role="alert">{form.formState.errors.password.message}</p>}
         <FormField
           control={form.control}
           name="password"

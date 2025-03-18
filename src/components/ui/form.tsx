@@ -1,6 +1,6 @@
 import type * as LabelPrimitive from '@radix-ui/react-label';
 import { Slot } from '@radix-ui/react-slot';
-import { createContext } from 'preact';
+import { type ComponentProps, createContext } from 'preact';
 import { useContext, useId } from 'preact/hooks';
 import {
   Controller,
@@ -11,8 +11,8 @@ import {
   useFormContext,
   useFormState,
 } from 'react-hook-form';
+import { Label } from '@/components/ui/label';
 import { classNameMerger } from '@/lib/utils';
-import { Label } from './label';
 
 const Form = FormProvider;
 
@@ -22,6 +22,12 @@ type FormFieldContextValue<
 > = {
   name: TName;
 };
+
+type FormItemContextValue = {
+  id: string;
+};
+
+const FormItemContext = createContext<FormItemContextValue>({} as FormItemContextValue);
 
 const FormFieldContext = createContext<FormFieldContextValue>({} as FormFieldContextValue);
 
@@ -35,22 +41,6 @@ const FormField = <TFieldValues extends FieldValues = FieldValues, TName extends
     </FormFieldContext.Provider>
   );
 };
-
-type FormItemContextValue = {
-  id: string;
-};
-
-const FormItemContext = createContext<FormItemContextValue>({} as FormItemContextValue);
-
-function FormItem({ className, ...props }: React.ComponentProps<'div'>) {
-  const id = useId();
-
-  return (
-    <FormItemContext.Provider value={{ id }}>
-      <div data-slot="form-item" className={classNameMerger('grid gap-2', className)} {...props} />
-    </FormItemContext.Provider>
-  );
-}
 
 function useFormField() {
   const fieldContext = useContext(FormFieldContext);
@@ -75,7 +65,17 @@ function useFormField() {
   };
 }
 
-function FormLabel({ className, ...props }: React.ComponentProps<typeof LabelPrimitive.Root>) {
+function FormItem({ className, ...props }: ComponentProps<'div'>) {
+  const id = useId();
+
+  return (
+    <FormItemContext.Provider value={{ id }}>
+      <div data-slot="form-item" className={classNameMerger('grid gap-2', className)} {...props} />
+    </FormItemContext.Provider>
+  );
+}
+
+function FormLabel({ className, ...props }: ComponentProps<typeof LabelPrimitive.Root>) {
   const { error, formItemId } = useFormField();
 
   return (
@@ -89,7 +89,7 @@ function FormLabel({ className, ...props }: React.ComponentProps<typeof LabelPri
   );
 }
 
-function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
+function FormControl({ ...props }: ComponentProps<typeof Slot>) {
   const { error, formItemId, formDescriptionId, formMessageId } = useFormField();
 
   return (
@@ -103,7 +103,7 @@ function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
   );
 }
 
-function FormDescription({ className, ...props }: React.ComponentProps<'p'>) {
+function FormDescription({ className, ...props }: ComponentProps<'p'>) {
   const { formDescriptionId } = useFormField();
 
   return (
@@ -116,27 +116,22 @@ function FormDescription({ className, ...props }: React.ComponentProps<'p'>) {
   );
 }
 
-function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
+function FormMessage({ className, ...props }: ComponentProps<'p'>) {
   const { error, formMessageId } = useFormField();
-  const body = error ? String(error?.message) : props.children;
+  const body = error ? String(error?.message ?? '') : props.children;
 
   if (body == null) {
     return null;
   }
 
   return (
-    <p
-      data-slot="form-message"
-      id={formMessageId}
-      className={classNameMerger('text-destructive text-sm font-medium', className)}
-      {...props}
-    >
+    <p data-slot="form-message" id={formMessageId} className={classNameMerger('text-destructive text-sm', className)} {...props}>
       {body}
     </p>
   );
 }
 
-function FormRootError({ className, ...props }: React.ComponentProps<'p'>) {
+function FormRootError({ className, ...props }: ComponentProps<'p'>) {
   const { errors } = useFormState();
   if (errors.root == null) {
     return null;
