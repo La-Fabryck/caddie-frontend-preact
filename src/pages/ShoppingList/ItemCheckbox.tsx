@@ -11,7 +11,7 @@ export function ItemCheckbox({ item, onChange, isChecked }: ItemCheckboxType) {
   return (
     <li
       key={item.id}
-      className="hover:bg-base flex w-full items-center rounded-lg p-0 transition-all focus:bg-slate-100 active:bg-slate-100"
+      className="hover:bg-surface1 flex w-full items-center rounded-lg p-0 transition-all focus:bg-slate-100 active:bg-slate-100"
     >
       <label htmlFor={item.id} className="flex w-full cursor-pointer items-center px-3 py-2" aria-labelledby={`label-${item.id}`}>
         <div className="inline-flex items-center">

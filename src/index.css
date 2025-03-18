@@ -4,11 +4,11 @@
 */
 @plugin 'tailwindcss-animate';
 
-@custom-variant dark (@media (prefers-color-scheme: dark));
+@custom-variant dark (@media (prefers-color-scheme: light));
 
 @theme inline {
   --color-ring: var(--ring);
-  --color-background: var(--color-base);
+  --color-background: #24273a;
   --color-foreground: var(--color-text);
   --color-border: var(--border);
   --color-text: #cad3f5;
@@ -20,7 +20,7 @@
   --color-surface2: #5b6078;
   --color-surface1: #494d64;
   --color-surface0: #363a4f;
-  --color-base: #24273a;
+  --color-base: var(--color-text);
   --color-mantle: #1e2030;
   --color-crust: #181926;
   --color-yellow: #eed49f;
@@ -46,12 +46,12 @@
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
+  /* Used for placeholder */
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-chart-1: var(--chart-1);
@@ -70,12 +70,15 @@
   */
 
   /* Default background color of <body />...etc */
-  --background: var(--color-base);
+  --background: var(--color-background);
   --foreground: var(--color-text);
 
-  /* Muted backgrounds such as <TabsList />, <Skeleton /> and <Switch /> */
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
+  /* 
+  Muted backgrounds such as <TabsList />, <Skeleton /> and <Switch />
+  Used for placeholder
+  */
+  --muted: var(--color-subtext1);
+  --muted-foreground: var(--color-subtext0);
 
   /* Background color for <Card /> */
   --card: 0 0% 100%;
@@ -89,11 +92,11 @@
   --border: 214.3 31.8% 91.4%;
 
   /* Border color for inputs such as <Input />, <Select />, <Textarea /> */
-  --input: 214.3 31.8% 91.4%;
+  --input: var(--color-surface1);
 
   /* Primary colors for <Button /> */
   --primary: var(--color-green);
-  --primary-foreground: var(--color-base);
+  --primary-foreground: var(--color-background);
 
   /* Secondary colors for <Button /> */
   --secondary: 210 40% 96.1%;
@@ -105,10 +108,10 @@
 
   /* Used for destructive actions such as <Button variant="destructive"> */
   --destructive: var(--color-red);
-  --destructive-foreground: var(--color-base);
+  --destructive-foreground: var(--color-background);
 
   /* Used for focus ring */
-  --ring: 215 20.2% 65.1%;
+  --ring: var(--color-overlay2);
 
   /* Border radius for card, input and buttons */
   --radius: 0.5rem;

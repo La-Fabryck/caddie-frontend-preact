@@ -1,5 +1,5 @@
 import { type ComponentProps } from 'preact';
-import { classNameMerger } from 'src/lib/utils';
+import { classNameMerger } from '@/lib/utils';
 
 function Input({ className, type, ...props }: ComponentProps<'input'>) {
   return (
