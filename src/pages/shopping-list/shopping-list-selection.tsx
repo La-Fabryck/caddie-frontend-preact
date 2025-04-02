@@ -1,8 +1,8 @@
 import { type Signal } from '@preact/signals';
 import { type JSX } from 'preact';
 import { type Item } from '@/responses';
-import { ShoppingItemSelection } from './ShopingItemSelection';
-import { ShoppingListWrapper } from './ShoppingListWrapper';
+import { ShoppingItemSelection } from './shopping-item-selection';
+import { ShoppingListWrapper } from './shopping-list-wrapper';
 
 type ShoppingItemsProps = {
   items: Signal<Item[] | null>;

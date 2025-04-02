@@ -3,8 +3,8 @@ import { useRoute } from 'preact-iso';
 import { Loader } from '@/components';
 import { buildApiURL, createItemKey, createItemsKey } from '@/helpers';
 import { useFetch } from '@/hooks';
-import { EditItemForm } from '@/pages/EditItem/edit-item-form.tsx';
 import { type Item } from '@/responses';
+import { EditItemForm } from './edit-item-form';
 
 export function EditItem(): JSX.Element {
   const {

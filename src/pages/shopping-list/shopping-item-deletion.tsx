@@ -2,8 +2,8 @@ import { type JSX } from 'preact';
 import { buildApiURL } from '@/helpers';
 import { useFetch } from '@/hooks';
 import { type Item } from '@/responses';
-import { ItemCheckbox } from './ItemCheckbox';
-import { type ItemsToDeleteType } from './ShoppingListDeletion';
+import { ItemCheckbox } from './item-checkbox';
+import { type ItemsToDeleteType } from './shopping-list-deletion';
 
 type ShoppingItemDeletionType = {
   item: Item;

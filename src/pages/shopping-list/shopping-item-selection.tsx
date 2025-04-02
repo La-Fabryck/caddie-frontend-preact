@@ -3,7 +3,7 @@ import { type JSX } from 'preact';
 import { buildApiURL, debounce } from '@/helpers';
 import { useFetch } from '@/hooks';
 import { type Item } from '@/responses';
-import { ItemCheckbox } from './ItemCheckbox';
+import { ItemCheckbox } from './item-checkbox';
 
 type ShoppingItemSelectionType = {
   item: Item;

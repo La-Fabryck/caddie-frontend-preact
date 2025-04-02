@@ -7,8 +7,8 @@ import { buttonVariants } from '@/components/ui';
 import { buildApiURL, createItemsKey } from '@/helpers';
 import { useFetch } from '@/hooks';
 import { type Item } from '@/responses';
-import { ShoppingListDeletion } from './ShoppingListDeletion';
-import { ShoppingListSelection } from './ShoppingListSelection';
+import { ShoppingListDeletion } from './shopping-list-deletion';
+import { ShoppingListSelection } from './shopping-list-selection';
 
 type ShoppingListContentProps = {
   shoppingListId: string;

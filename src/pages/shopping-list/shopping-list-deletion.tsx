@@ -4,8 +4,8 @@ import { type JSX } from 'preact';
 import { type Action } from '@/components';
 import { Button } from '@/components/ui';
 import { type Item } from '@/responses';
-import { ShoppingItemDeletion } from './ShoppingItemDeletion';
-import { ShoppingListWrapper } from './ShoppingListWrapper';
+import { ShoppingItemDeletion } from './shopping-item-deletion';
+import { ShoppingListWrapper } from './shopping-list-wrapper';
 
 type ItemToDeleteTuple = [string, () => Promise<void>];
 type ItemsToDeleteType = Signal<ItemToDeleteTuple[]>;

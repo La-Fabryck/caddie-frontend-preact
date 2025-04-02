@@ -1,6 +1,6 @@
 import { batch, useSignal } from '@preact/signals';
 import { useEffect } from 'preact/hooks';
-import { useCache } from './useCache';
+import { useCache } from './use-cache';
 
 //TODO: Refactor useFetch & useMutation. Easier type annotation and default values
 

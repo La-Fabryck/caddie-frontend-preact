@@ -1,2 +1,2 @@
-export * from './useCache';
-export * from './useFetch';
+export * from './use-cache';
+export * from './use-fetch';
