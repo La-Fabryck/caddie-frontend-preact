@@ -4,16 +4,16 @@ import { useLocation, useRoute } from 'preact-iso';
 import { useForm } from 'react-hook-form';
 import { Loader } from '@/components';
 import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Input } from '@/components/ui';
-import { buildApiURL, createItemKey, createListKey, feedServerErrorsToForm, type FormErrors } from '@/helpers';
+import { buildApiURL, createItemsKey, createListKey, feedServerErrorsToForm, type FormErrors } from '@/helpers';
 import { useFetch } from '@/hooks';
 import { itemErrorMessages } from '@/messages';
 import { type Item, type List } from '@/responses';
 
-type CreateItem = {
+export type CreateItem = {
   name: string;
 };
 
-type ListErrors = FormErrors<CreateItem>;
+type CreateItemErrors = FormErrors<CreateItem>;
 
 export function CreateItem(): JSX.Element {
   const { route } = useLocation();
@@ -29,14 +29,14 @@ export function CreateItem(): JSX.Element {
 
   const { invalidate: invalidateItems } = useFetch<Item[]>({
     url: buildApiURL(`/list/${shoppingListId}/items`),
-    key: createItemKey(shoppingListId),
+    key: createItemsKey(shoppingListId),
   });
 
   const {
     executeRequest: addItem,
     isLoading: isLoadingAddItem,
     error,
-  } = useFetch<Item, ListErrors, CreateItem>({
+  } = useFetch<Item, CreateItemErrors, CreateItem>({
     url: buildApiURL(`/list/${shoppingListId}/items`),
     method: 'POST',
     onSuccessCallback: () => {

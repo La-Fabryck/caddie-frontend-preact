@@ -4,7 +4,7 @@ import { type JSX } from 'preact';
 import { useLocation } from 'preact-iso';
 import { type Action, Loader } from '@/components';
 import { buttonVariants } from '@/components/ui';
-import { buildApiURL, createItemKey } from '@/helpers';
+import { buildApiURL, createItemsKey } from '@/helpers';
 import { useFetch } from '@/hooks';
 import { type Item } from '@/responses';
 import { ShoppingListDeletion } from './ShoppingListDeletion';
@@ -22,7 +22,7 @@ export function ShoppingListContent({ action, shoppingListId }: ShoppingListCont
     invalidate: invalidateItems,
   } = useFetch<Item[]>({
     url: buildApiURL(`/list/${shoppingListId}/items`),
-    key: createItemKey(shoppingListId),
+    key: createItemsKey(shoppingListId),
   });
 
   const { route } = useLocation();
