@@ -8,6 +8,7 @@ import { buildApiURL, createItemsKey } from '@/helpers';
 import { useFetch } from '@/hooks';
 import { type Item } from '@/responses';
 import { ShoppingListDeletion } from './shopping-list-deletion';
+import { ShoppingListEdition } from './shopping-list-edition';
 import { ShoppingListSelection } from './shopping-list-selection';
 
 type ShoppingListContentProps = {
@@ -16,6 +17,8 @@ type ShoppingListContentProps = {
 };
 
 export function ShoppingListContent({ action, shoppingListId }: ShoppingListContentProps): JSX.Element {
+  const { route } = useLocation();
+
   const {
     data: items,
     isLoading: isLoadingItems,
@@ -24,8 +27,6 @@ export function ShoppingListContent({ action, shoppingListId }: ShoppingListCont
     url: buildApiURL(`/list/${shoppingListId}/items`),
     key: createItemsKey(shoppingListId),
   });
-
-  const { route } = useLocation();
 
   effect(() => {
     if (items.value?.length === 0) {
@@ -53,7 +54,7 @@ export function ShoppingListContent({ action, shoppingListId }: ShoppingListCont
       );
 
     case 'edition':
-      return <p>TODO...</p>;
+      return <ShoppingListEdition items={items} />;
     case 'deletion':
       return <ShoppingListDeletion items={items} invalidate={invalidateItems} action={action} />;
     default:
