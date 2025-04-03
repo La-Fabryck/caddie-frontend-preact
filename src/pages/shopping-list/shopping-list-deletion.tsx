@@ -10,7 +10,7 @@ import { ShoppingListWrapper } from './shopping-list-wrapper';
 type ItemToDeleteTuple = [string, () => Promise<void>];
 type ItemsToDeleteType = Signal<ItemToDeleteTuple[]>;
 
-type ShoppingItemsProps = {
+type ShoppingListDeletionProps = {
   items: Signal<Item[] | null>;
   invalidate: () => void;
   action: Signal<Action>;
@@ -29,7 +29,7 @@ function computeDeletionButtonText(length: number) {
   return `Supprimer ${length} articles`;
 }
 
-function ShoppingListDeletion({ items, invalidate, action }: ShoppingItemsProps): JSX.Element {
+function ShoppingListDeletion({ items, invalidate, action }: ShoppingListDeletionProps): JSX.Element {
   const itemsToDelete = useSignal<ItemToDeleteTuple[]>([]);
 
   async function onClick(it: ItemToDeleteTuple[]) {

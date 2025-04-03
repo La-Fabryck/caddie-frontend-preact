@@ -10,11 +10,11 @@ type ShoppingItemSelectionType = {
   invalidateItems: () => void;
 };
 
-export function ShoppingItemSelection({ item: itemInitalValue, invalidateItems }: ShoppingItemSelectionType): JSX.Element {
-  const item = useSignal(itemInitalValue);
+export function ShoppingItemSelection({ item: itemInitialValue, invalidateItems }: ShoppingItemSelectionType): JSX.Element {
+  const item = useSignal(itemInitialValue);
   const { executeRequest: updateIsInCart, data: updatedItem } = useFetch<Item, null, Pick<Item, 'isInCart'>>({
     method: 'PATCH',
-    url: buildApiURL(`/list/${itemInitalValue.listId}/items/${itemInitalValue.id}`),
+    url: buildApiURL(`/list/${itemInitialValue.listId}/items/${itemInitialValue.id}`),
     onSuccessCallback: () => {
       if (updatedItem.value != null) {
         item.value = updatedItem.value;
