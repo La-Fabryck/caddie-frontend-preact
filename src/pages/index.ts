@@ -1,5 +1,6 @@
 export * from './_404';
 export * from './add-item';
+export * from './create-account';
 export * from './create-list';
 export * from './edit-item';
 export * from './home';

@@ -1,10 +1,9 @@
-import { Loader2, SquareArrowOutUpRight } from 'lucide-preact';
+import { Loader2 } from 'lucide-preact';
 import { type JSX } from 'preact';
 import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
 import {
   Button,
-  buttonVariants,
   Form,
   FormControl,
   FormDescription,
@@ -17,42 +16,39 @@ import {
 } from '@/components/ui';
 import { buildApiURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
 import { useFetch } from '@/hooks';
-import { loginErrorMessages } from '@/messages';
+import { userCreationErrorMessages } from '@/messages';
 
-type Credentials = {
+type UserCreation = {
   email: string;
+  name: string;
   password: string;
 };
 
-type LoginErrors = FormErrors<Credentials>;
+type UserCreationErrors = FormErrors<UserCreation>;
 
-export function Login(): JSX.Element {
+export function CreateAccount(): JSX.Element {
   const { route } = useLocation();
-  const form = useForm<Credentials>();
+  const form = useForm<UserCreation>();
   const {
-    executeRequest: handleLogin,
+    executeRequest: createUser,
     isLoading,
     error,
-  } = useFetch<null, LoginErrors, Credentials>({
-    url: buildApiURL('/authentication/login'),
+  } = useFetch<null, UserCreationErrors, UserCreation>({
+    url: buildApiURL('/users'),
     method: 'POST',
     onSuccessCallback: () => {
-      window.localStorage.setItem('isAuthenticated', '1');
-      route('/', true);
+      route('/login', false);
     },
     onErrorCallback: () => {
-      feedServerErrorsToForm(form.setError, error, loginErrorMessages);
+      feedServerErrorsToForm(form.setError, error, userCreationErrorMessages);
     },
   });
 
   return (
     <>
-      <h1 className="text-center">S&apos;authentifier</h1>
-      <a className={buttonVariants({ variant: 'link', className: 'my-8 w-full text-center' })} href={'/create-account'}>
-        Vous n&apos;avez pas encore de compte ? Créer votre compte <SquareArrowOutUpRight />
-      </a>
+      <h1 className="mb-8 text-center">Créer son compte</h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(createUser)} className="space-y-8">
           <FormRootError />
           <FormField
             control={form.control}
@@ -64,6 +60,20 @@ export function Login(): JSX.Element {
                   <Input type="email" placeholder="ton@email.com" {...field} />
                 </FormControl>
                 <FormDescription>Rentre ton email.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Ton surnom</FormLabel>
+                <FormControl>
+                  <Input placeholder="Ton surnom par défaut pour les listes." {...field} />
+                </FormControl>
+                <FormDescription>Ton surnom de 2 lettres minimum, on est sérieux ici.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
