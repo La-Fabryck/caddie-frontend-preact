@@ -1,0 +1,13 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - caddie_network
+
+networks:
+  caddie_network:
+    external: true

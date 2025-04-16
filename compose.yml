@@ -18,4 +18,3 @@ services:
 networks:
   caddie_network:
     external: true
-      #name: caddie_network
