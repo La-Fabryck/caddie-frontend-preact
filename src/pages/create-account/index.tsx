@@ -15,7 +15,7 @@ import {
   Input,
 } from '@/components/ui';
 import { buildApiURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
-import { useFetch } from '@/hooks';
+import { useMutation } from '@/hooks';
 import { userCreationErrorMessages } from '@/messages';
 
 type UserCreation = {
@@ -33,7 +33,7 @@ export function CreateAccount(): JSX.Element {
     executeRequest: createUser,
     isLoading,
     error,
-  } = useFetch<null, UserCreationErrors, UserCreation>({
+  } = useMutation<null, UserCreationErrors, UserCreation>({
     url: buildApiURL('/users'),
     method: 'POST',
     onSuccessCallback: () => {

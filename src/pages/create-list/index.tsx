@@ -4,7 +4,7 @@ import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
 import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Input } from '@/components/ui';
 import { buildApiURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
-import { useFetch } from '@/hooks';
+import { useMutation } from '@/hooks';
 import { listErrorMessages } from '@/messages';
 import { type ListWithSubs } from '@/responses';
 
@@ -23,7 +23,7 @@ export function CreateList(): JSX.Element {
     isLoading,
     error,
     data,
-  } = useFetch<ListWithSubs, ListErrors, CreateList>({
+  } = useMutation<ListWithSubs, ListErrors, CreateList>({
     url: buildApiURL('/list'),
     method: 'POST',
     onSuccessCallback: () => {

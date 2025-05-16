@@ -2,16 +2,11 @@ import { batch, useSignal } from '@preact/signals';
 import { useEffect } from 'preact/hooks';
 import { useCache } from './use-cache';
 
-//TODO: Refactor useFetch & useMutation. Easier type annotation and default values
-
 type HTTPMethods = 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE';
 type FetchRequestInit = Omit<RequestInit, 'method'> & { method: HTTPMethods };
 
-type FetchConfig = GetConfig | MutationConfig;
-
 type GetConfig = {
   url: URL | string;
-  method?: Extract<HTTPMethods, 'GET'>;
   key: string;
   options?: {
     noCache?: boolean;
@@ -33,17 +28,6 @@ type MutationConfig = {
 // 5 minutes in ms
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const TTL_DEFAULT = 5 * 60 * 1000;
-
-const UNAUTHORIZED = 401;
-
-/**
- * Verify if the mehod is safe or not. Same behaviour as the fetch, default is GET.
- *
- * https://developer.mozilla.org/en-US/docs/Glossary/Safe/HTTP
- */
-function isSafeMethod(method: HTTPMethods = 'GET'): boolean {
-  return ['GET', 'HEAD', 'OPTIONS'].includes(method);
-}
 
 function isMutation(method: HTTPMethods = 'GET'): boolean {
   return ['PATCH', 'POST', 'PUT'].includes(method);
@@ -67,17 +51,98 @@ function fetchInitConfig(method: HTTPMethods = 'GET', body?: unknown): FetchRequ
 }
 
 /**
- * Custom hook intended to work similarly as useQuery. One hook for both
+ * Safely extracts JSON content from a Response, returning null if:
+ * - The response has no content (content-length is 0 or missing)
+ * - The response body is empty
+ *
+ * Avoids errors when calling response.json() on empty responses.
  */
-export function useFetch<TResponse = unknown, UError = unknown, VBody = FetchRequestInit['body']>(fetchConfig: FetchConfig) {
+async function extractContent<T>(response: Response): Promise<T | null> {
+  const hasContent = Boolean(parseInt(response.headers.get('content-length') ?? '0'));
+  return hasContent ? ((await response.json()) as T) : null;
+}
+
+/**
+ * Hook for performing data mutations (POST/PUT/PATCH/DELETE) with built-in state management.
+ *
+ * Features:
+ * - Handles success/error states automatically
+ * - Supports optional side effects via callbacks
+ * - Provides loading state tracking
+ * - Type-safe request/response handling
+ */
+function useMutation<TResponse = unknown, UError = unknown, VBody = FetchRequestInit['body']>({
+  url,
+  method,
+  onErrorCallback,
+  onSuccessCallback,
+}: MutationConfig) {
+  const isLoading = useSignal<boolean>(false);
+  const data = useSignal<TResponse | null>(null);
+  const error = useSignal<UError | null>(null);
+
+  async function executeRequest(body: VBody): Promise<void> {
+    batch(() => {
+      data.value = null;
+      isLoading.value = true;
+      error.value = null;
+    });
+
+    const response = await fetch(url, {
+      ...fetchInitConfig(method, body),
+    });
+
+    if (response.ok) {
+      const contentResponse = await extractContent<TResponse>(response);
+      batch(() => {
+        error.value = null;
+        isLoading.value = false;
+        data.value = contentResponse;
+      });
+
+      if (typeof onSuccessCallback === 'function') {
+        onSuccessCallback();
+      }
+    } else {
+      const errorResponse = await extractContent<UError>(response);
+      batch(() => {
+        error.value = errorResponse;
+        isLoading.value = false;
+        data.value = null;
+      });
+
+      if (typeof onErrorCallback === 'function') {
+        onErrorCallback();
+      }
+    }
+  }
+
+  return {
+    isLoading,
+    data,
+    error,
+    executeRequest,
+  } as const;
+}
+
+/**
+ * A lightweight data-fetching hook with built-in caching and request management.
+ *
+ * Features:
+ * - Automatic GET requests on mount
+ * - Caching with TTL (time-to-live)
+ * - Manual cache invalidation
+ * - Loading and error states
+ */
+function useQuery<TResponse = unknown, UError = unknown>({ key, url, options: { noCache = false, ttl = TTL_DEFAULT } = {} }: GetConfig) {
   const isLoading = useSignal<boolean>(false);
   const data = useSignal<TResponse | null>(null);
   const error = useSignal<UError | null>(null);
   const { getCache, setCache, deleteCache } = useCache<TResponse>();
 
-  async function executeRequest(body?: VBody): Promise<void> {
-    if ('key' in fetchConfig && !(fetchConfig.options?.noCache ?? false)) {
-      const cacheHit = getCache(fetchConfig.key);
+  async function executeRequest(): Promise<void> {
+    if (!noCache) {
+      const cacheHit = getCache(key);
       if (cacheHit != null) {
         batch(() => {
           data.value = cacheHit;
@@ -95,61 +160,35 @@ export function useFetch<TResponse = unknown, UError = unknown, VBody = FetchReq
       error.value = null;
     });
 
-    const response = await fetch(fetchConfig.url, {
-      ...fetchInitConfig(fetchConfig.method, body),
+    const response = await fetch(url, {
+      ...fetchInitConfig('GET'),
     });
 
-    //if the content is null, it fails when using response.json()
-    const hasJsonContent = Boolean(parseInt(response.headers.get('content-length') ?? '0'));
-
     if (response.ok) {
-      const contentResponse = hasJsonContent ? ((await response.json()) as TResponse) : null;
+      const contentResponse = await extractContent<TResponse>(response);
       batch(() => {
         error.value = null;
         isLoading.value = false;
         data.value = contentResponse;
       });
 
-      if ('key' in fetchConfig && isSafeMethod(fetchConfig.method)) {
-        setCache(fetchConfig.key, contentResponse, fetchConfig.options?.ttl ?? TTL_DEFAULT);
-      }
-
-      if ('onSuccessCallback' in fetchConfig) {
-        fetchConfig.onSuccessCallback();
-      }
+      setCache(key, contentResponse, ttl);
     } else {
-      const errorResponse = hasJsonContent ? ((await response.json()) as UError) : null;
+      const errorResponse = await extractContent<UError>(response);
       batch(() => {
         error.value = errorResponse;
         isLoading.value = false;
         data.value = null;
       });
-
-      if ('onErrorCallback' in fetchConfig) {
-        fetchConfig.onErrorCallback();
-      }
-
-      // TODO: default cleanup function ?
-      // when unauthorized, it means no auth cookie, clear the localStorage
-      // use session storage ?
-      if (response.status === UNAUTHORIZED) {
-        window.localStorage.clear();
-      }
     }
   }
 
   function invalidate() {
-    if ('key' in fetchConfig && isSafeMethod(fetchConfig.method)) {
-      deleteCache(fetchConfig.key);
-    } else {
-      throw new Error('Not supported with unsafe methods');
-    }
+    deleteCache(key);
   }
 
   useEffect(() => {
-    if (isSafeMethod(fetchConfig.method)) {
-      void executeRequest();
-    }
+    void executeRequest();
   });
 
   return {
@@ -160,3 +199,5 @@ export function useFetch<TResponse = unknown, UError = unknown, VBody = FetchReq
     invalidate,
   } as const;
 }
+
+export { useMutation, useQuery };

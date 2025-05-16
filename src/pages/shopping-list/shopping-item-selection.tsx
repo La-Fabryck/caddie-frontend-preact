@@ -1,7 +1,7 @@
 import { useSignal } from '@preact/signals';
 import { type JSX } from 'preact';
 import { buildApiURL, debounce } from '@/helpers';
-import { useFetch } from '@/hooks';
+import { useMutation } from '@/hooks';
 import { type Item } from '@/responses';
 import { ItemCheckbox } from './item-checkbox';
 
@@ -12,7 +12,7 @@ type ShoppingItemSelectionType = {
 
 export function ShoppingItemSelection({ item: itemInitialValue, invalidateItems }: ShoppingItemSelectionType): JSX.Element {
   const item = useSignal(itemInitialValue);
-  const { executeRequest: updateIsInCart, data: updatedItem } = useFetch<Item, null, Pick<Item, 'isInCart'>>({
+  const { executeRequest: updateIsInCart, data: updatedItem } = useMutation<Item, null, Pick<Item, 'isInCart'>>({
     method: 'PATCH',
     url: buildApiURL(`/list/${itemInitialValue.listId}/items/${itemInitialValue.id}`),
     onSuccessCallback: () => {

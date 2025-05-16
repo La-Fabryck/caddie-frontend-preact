@@ -11,7 +11,7 @@
 # v1 Nicer things
 
 - useFetch :
-  - Refactor useFetch (useFetch & useMutation)
+  - ~~Refactor useFetch (useFetch & useMutation)~~
   - Abort Controller
     - https://www.cluemediator.com/how-to-cancel-a-fetch-request-in-react
     - https://developer.mozilla.org/en-US/docs/Web/API/AbortController
@@ -25,7 +25,9 @@
 - Subscription :
   - Create a link to subscribe
   - Allow subscription
-- Log out (clear cache etc)
+- Auth
+  - Handle Login bug and token refresh
+  - Log out (clear cache etc)
 - Husky
 - Style :
   - Improve display and style
@@ -37,8 +39,8 @@
 - List:
   - Create a list from missing items
 - SSE
-    - https://www.digitalocean.com/community/tutorials/nodejs-server-sent-events-build-realtime-app
-    - https://github.com/nestjs/nest/issues/12670
+  - https://www.digitalocean.com/community/tutorials/nodejs-server-sent-events-build-realtime-app
+  - https://github.com/nestjs/nest/issues/12670
 - pm2 for monitoring https://pm2.keymetrics.io/
 
 # v3

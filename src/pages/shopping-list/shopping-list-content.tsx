@@ -5,7 +5,7 @@ import { useLocation } from 'preact-iso';
 import { type Action, Loader } from '@/components';
 import { buttonVariants } from '@/components/ui';
 import { buildApiURL, createItemsKey } from '@/helpers';
-import { useFetch } from '@/hooks';
+import { useQuery } from '@/hooks';
 import { type Item } from '@/responses';
 import { ShoppingListDeletion } from './shopping-list-deletion';
 import { ShoppingListEdition } from './shopping-list-edition';
@@ -23,7 +23,7 @@ export function ShoppingListContent({ action, shoppingListId }: ShoppingListCont
     data: items,
     isLoading: isLoadingItems,
     invalidate: invalidateItems,
-  } = useFetch<Item[]>({
+  } = useQuery<Item[]>({
     url: buildApiURL(`/list/${shoppingListId}/items`),
     key: createItemsKey(shoppingListId),
   });

@@ -1,7 +1,7 @@
 import { type JSX } from 'preact';
 import { Loader } from '@/components';
 import { buildApiURL, createListKey } from '@/helpers';
-import { useFetch } from '@/hooks';
+import { useQuery } from '@/hooks';
 import { type List } from '@/responses';
 
 type ShoppingListHeaderProps = {
@@ -9,7 +9,7 @@ type ShoppingListHeaderProps = {
 };
 
 export function ShoppingListHeader({ shoppingListId }: ShoppingListHeaderProps): JSX.Element {
-  const { data: listDetail, isLoading: isLoadingList } = useFetch<List>({
+  const { data: listDetail, isLoading: isLoadingList } = useQuery<List>({
     url: buildApiURL(`/list/${shoppingListId}`),
     key: createListKey(shoppingListId),
   });

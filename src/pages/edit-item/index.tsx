@@ -2,7 +2,7 @@ import { type JSX } from 'preact';
 import { useRoute } from 'preact-iso';
 import { Loader } from '@/components';
 import { buildApiURL, createItemKey, createItemsKey } from '@/helpers';
-import { useFetch } from '@/hooks';
+import { useQuery } from '@/hooks';
 import { type Item } from '@/responses';
 import { EditItemForm } from './edit-item-form';
 
@@ -11,7 +11,7 @@ export function EditItem(): JSX.Element {
     params: { shoppingListId, itemId },
   } = useRoute();
 
-  const { invalidate: invalidateItems } = useFetch<Item[]>({
+  const { invalidate: invalidateItems } = useQuery<Item[]>({
     url: buildApiURL(`/list/${shoppingListId}/items`),
     key: createItemsKey(shoppingListId),
   });
@@ -20,7 +20,7 @@ export function EditItem(): JSX.Element {
     data: item,
     isLoading: isLoadingItem,
     invalidate: invalidateItem,
-  } = useFetch<Item>({
+  } = useQuery<Item>({
     url: buildApiURL(`/list/${shoppingListId}/items/${itemId}`),
     key: createItemKey(itemId),
   });

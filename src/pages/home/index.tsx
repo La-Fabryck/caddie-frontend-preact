@@ -3,7 +3,7 @@ import { type JSX } from 'preact';
 import { Loader } from '@/components';
 import { buttonVariants } from '@/components/ui/button';
 import { buildApiURL, createAllListsKey, formatDateToISO, formatDateToLongFormat } from '@/helpers';
-import { useFetch } from '@/hooks';
+import { useQuery } from '@/hooks';
 import { type List } from '@/responses';
 
 function printLists(isLoading: boolean, lists: List[]): JSX.Element {
@@ -51,7 +51,7 @@ function printLists(isLoading: boolean, lists: List[]): JSX.Element {
 }
 
 export function Home(): JSX.Element {
-  const { data: allLists, isLoading } = useFetch<List[]>({
+  const { data: allLists, isLoading } = useQuery<List[]>({
     url: buildApiURL('/list'),
     key: createAllListsKey(),
   });

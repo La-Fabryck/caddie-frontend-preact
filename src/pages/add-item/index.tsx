@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Loader } from '@/components';
 import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Input } from '@/components/ui';
 import { buildApiURL, createItemsKey, createListKey, feedServerErrorsToForm, type FormErrors } from '@/helpers';
-import { useFetch } from '@/hooks';
+import { useMutation, useQuery } from '@/hooks';
 import { itemErrorMessages } from '@/messages';
 import { type Item, type List } from '@/responses';
 
@@ -22,12 +22,12 @@ export function CreateItem(): JSX.Element {
   } = useRoute();
   const form = useForm<CreateItem>();
 
-  const { data: listDetail, isLoading: isLoadingList } = useFetch<List>({
+  const { data: listDetail, isLoading: isLoadingList } = useQuery<List>({
     url: buildApiURL(`/list/${shoppingListId}`),
     key: createListKey(shoppingListId),
   });
 
-  const { invalidate: invalidateItems } = useFetch<Item[]>({
+  const { invalidate: invalidateItems } = useQuery<Item[]>({
     url: buildApiURL(`/list/${shoppingListId}/items`),
     key: createItemsKey(shoppingListId),
   });
@@ -36,7 +36,7 @@ export function CreateItem(): JSX.Element {
     executeRequest: addItem,
     isLoading: isLoadingAddItem,
     error,
-  } = useFetch<Item, CreateItemErrors, CreateItem>({
+  } = useMutation<Item, CreateItemErrors, CreateItem>({
     url: buildApiURL(`/list/${shoppingListId}/items`),
     method: 'POST',
     onSuccessCallback: () => {

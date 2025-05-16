@@ -16,7 +16,7 @@ import {
   Input,
 } from '@/components/ui';
 import { buildApiURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
-import { useFetch } from '@/hooks';
+import { useMutation } from '@/hooks';
 import { loginErrorMessages } from '@/messages';
 
 type Credentials = {
@@ -33,7 +33,7 @@ export function Login(): JSX.Element {
     executeRequest: handleLogin,
     isLoading,
     error,
-  } = useFetch<null, LoginErrors, Credentials>({
+  } = useMutation<null, LoginErrors, Credentials>({
     url: buildApiURL('/authentication/login'),
     method: 'POST',
     onSuccessCallback: () => {

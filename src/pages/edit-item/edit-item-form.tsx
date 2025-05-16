@@ -4,7 +4,7 @@ import { useLocation } from 'preact-iso';
 import { useForm } from 'react-hook-form';
 import { Button, Checkbox, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Input } from '@/components/ui';
 import { buildApiURL, feedServerErrorsToForm, type FormErrors } from '@/helpers';
-import { useFetch } from '@/hooks';
+import { useMutation } from '@/hooks';
 import { itemErrorMessages } from '@/messages';
 import { type CreateItem } from '@/pages';
 import { type Item } from '@/responses';
@@ -40,7 +40,7 @@ export function EditItemForm({ invalidateItems, invalidateItem, itemInitialValue
     executeRequest: editItem,
     isLoading: isLoadingEditItem,
     error,
-  } = useFetch<Item, EditItemErrors, CreateItem>({
+  } = useMutation<Item, EditItemErrors, CreateItem>({
     url: buildApiURL(`/list/${itemInitialValue.listId}/items/${itemInitialValue.id}`),
     method: 'PATCH',
     onSuccessCallback: () => {
