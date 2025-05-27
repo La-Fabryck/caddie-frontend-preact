@@ -19,6 +19,8 @@
 - List:
   - edit a list
   - list flag (active/inactive)
+  - order: 
+    - ~~Sby updated at~~
 - Items:
   - item type
   - quantity of items
@@ -28,11 +30,13 @@
 - Auth
   - Handle Login bug and token refresh
   - Log out (clear cache etc)
+- Title Tab Hook
 - Husky
 - Style :
   - Improve display and style
   - TailWind CSS not ugly
   - Proper Loader
+  - Website icon
 
 # v2 Improvement and real time communication
 
