@@ -51,14 +51,22 @@ function fetchInitConfig(method: HTTPMethods = 'GET', body?: unknown): FetchRequ
 }
 
 /**
- * Safely extracts JSON content from a Response, returning null if:
- * - The response has no content (content-length is 0 or missing)
- * - The response body is empty
+ * Safely extracts JSON content from a Response, returning null if the response has no content.
+ * Handles both regular and gzipped responses.
+ *
+ * Determines content presence by:
+ * 1. Checking Content-Length header (>0 means content exists), OR
+ * 2. Checking for gzip encoding (compressed responses may omit Content-Length)
  *
  * Avoids errors when calling response.json() on empty responses.
  */
 async function extractContent<T>(response: Response): Promise<T | null> {
-  const hasContent = Boolean(parseInt(response.headers.get('content-length') ?? '0'));
+  // if less than 1000 char, it has content-length
+  const hasLength = Boolean(parseInt(response.headers.get('content-length') ?? '0'));
+  // else its content-encoding is gzipped, see nginx.conf for details
+  const isGzipped = response.headers.get('content-encoding') === 'gzip';
+
+  const hasContent = hasLength || isGzipped;
   return hasContent ? ((await response.json()) as T) : null;
 }
 
