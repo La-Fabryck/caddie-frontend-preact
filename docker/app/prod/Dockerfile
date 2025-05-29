@@ -1,10 +1,10 @@
 # Stage 1: Build the app
-FROM node:23-alpine AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
 COPY package*.json /app/
-COPY vite.config.ts /app/
+COPY vite.config.mts /app/
 
 RUN npm ci
 
