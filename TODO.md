@@ -15,7 +15,7 @@
   - Abort Controller
     - https://www.cluemediator.com/how-to-cancel-a-fetch-request-in-react
     - https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-  - use [Request](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#creating_a_request_object)
+  - ~~use [Request](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#creating_a_request_object)~~
   - useFetch event to refresh when switching back to page
 - List:
   - edit a list

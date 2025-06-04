@@ -29,25 +29,21 @@ type MutationConfig = {
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const TTL_DEFAULT = 5 * 60 * 1000;
 
-function isMutation(method: HTTPMethods = 'GET'): boolean {
-  return ['PATCH', 'POST', 'PUT'].includes(method);
-}
+function prepareRequest(url: URL | string, method: HTTPMethods = 'GET', body?: unknown): Request {
+  const headers = new Headers({
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  });
 
-function fetchInitConfig(method: HTTPMethods = 'GET', body?: unknown): FetchRequestInit {
-  if (!isMutation(method) || method === 'DELETE') {
-    return {
-      method,
-    };
+  if (body == null) {
+    headers.delete('Content-Type');
   }
 
-  return {
+  return new Request(url, {
     method,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  };
+    headers,
+    body: body != null ? JSON.stringify(body) : null,
+  });
 }
 
 /**
@@ -96,9 +92,7 @@ function useMutation<TResponse = unknown, UError = unknown, VBody = FetchRequest
       error.value = null;
     });
 
-    const response = await fetch(url, {
-      ...fetchInitConfig(method, body),
-    });
+    const response = await fetch(prepareRequest(url, method, body));
 
     if (response.ok) {
       const contentResponse = await extractContent<TResponse>(response);
@@ -168,9 +162,7 @@ function useQuery<TResponse = unknown, UError = unknown>({ key, url, options: { 
       error.value = null;
     });
 
-    const response = await fetch(url, {
-      ...fetchInitConfig('GET'),
-    });
+    const response = await fetch(prepareRequest(url));
 
     if (response.ok) {
       const contentResponse = await extractContent<TResponse>(response);
