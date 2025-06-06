@@ -10,6 +10,8 @@ function ToggleActionGroup({ action }: ToggleActionProperties) {
     <ToggleGroup
       type="single"
       variant="outline"
+      //TODO: Class name
+      className="bg-destructive"
       value={action.value}
       size="lg"
       onValueChange={(value: Action) => {
