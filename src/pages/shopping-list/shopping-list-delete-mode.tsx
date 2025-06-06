@@ -44,7 +44,7 @@ function ShoppingListDeleteMode({ items, invalidate, action }: ShoppingListDelet
   return (
     <>
       <Button
-        className="font-semibold"
+        className="mb-3 font-semibold"
         variant={'destructive'}
         disabled={itemsToDelete.value.length === 0}
         onClick={async () => onClick(itemsToDelete.value)}
