@@ -4,13 +4,13 @@ import { type JSX } from 'preact';
 import { type Action } from '@/components';
 import { Button } from '@/components/ui';
 import { type Item } from '@/responses';
-import { ShoppingItemDeletion } from './shopping-item-deletion';
+import { DeleteShoppingItem } from './delete-shopping-item';
 import { ShoppingListWrapper } from './shopping-list-wrapper';
 
 type ItemToDeleteTuple = [string, () => Promise<void>];
 type ItemsToDeleteType = Signal<ItemToDeleteTuple[]>;
 
-type ShoppingListDeletionProps = {
+type ShoppingListDeleteModeProps = {
   items: Signal<Item[] | null>;
   invalidate: () => void;
   action: Signal<Action>;
@@ -29,7 +29,7 @@ function computeDeletionButtonText(length: number) {
   return `Supprimer ${length} articles`;
 }
 
-function ShoppingListDeletion({ items, invalidate, action }: ShoppingListDeletionProps): JSX.Element {
+function ShoppingListDeleteMode({ items, invalidate, action }: ShoppingListDeleteModeProps): JSX.Element {
   const itemsToDelete = useSignal<ItemToDeleteTuple[]>([]);
 
   async function onClick(it: ItemToDeleteTuple[]) {
@@ -53,10 +53,10 @@ function ShoppingListDeletion({ items, invalidate, action }: ShoppingListDeletio
         {computeDeletionButtonText(itemsToDelete.value.length)}
       </Button>
       <ShoppingListWrapper items={items}>
-        <>{items.value?.map((item) => <ShoppingItemDeletion item={item} key={item.id} itemsToDelete={itemsToDelete} />)}</>
+        <>{items.value?.map((item) => <DeleteShoppingItem item={item} key={item.id} itemsToDelete={itemsToDelete} />)}</>
       </ShoppingListWrapper>
     </>
   );
 }
 
-export { ShoppingListDeletion, type ItemsToDeleteType };
+export { ShoppingListDeleteMode, type ItemsToDeleteType };
