@@ -1,4 +1,6 @@
 import { type JSX } from 'preact';
+
 export function EditShoppingListForm(): JSX.Element {
-  return <Form></Form>;
+  // TODO: Implement
+  return <p>TO IMPLEMENT</p>;
 }
