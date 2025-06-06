@@ -3,14 +3,14 @@ import { buildApiURL } from '@/helpers';
 import { useMutation } from '@/hooks';
 import { type Item } from '@/responses';
 import { ItemCheckbox } from './item-checkbox';
-import { type ItemsToDeleteType } from './shopping-list-deletion';
+import { type ItemsToDeleteType } from './shopping-list-delete-mode';
 
-type ShoppingItemDeletionType = {
+type DeleteShoppingItem = {
   item: Item;
   itemsToDelete: ItemsToDeleteType;
 };
 
-export function ShoppingItemDeletion({ item, itemsToDelete }: ShoppingItemDeletionType): JSX.Element {
+export function DeleteShoppingItem({ item, itemsToDelete }: DeleteShoppingItem): JSX.Element {
   const { executeRequest: deleteItem } = useMutation<Item>({
     method: 'DELETE',
     url: buildApiURL(`/list/${item.listId}/items/${item.id}`),
