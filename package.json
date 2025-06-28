@@ -32,6 +32,7 @@
     "lucide-preact": "^0.513.0",
     "preact": "^10.26.8",
     "preact-iso": "^2.9.1",
+    "radix-ui": "^1.4.2",
     "react-hook-form": "^7.57.0",
     "tailwind-merge": "^3.3.0",
     "tailwindcss": "^4.1.8",

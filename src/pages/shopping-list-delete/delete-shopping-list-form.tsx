@@ -12,17 +12,17 @@ import { type MutateListFormProps } from '@/types';
 type EditListProps = Pick<List, 'title'>;
 type EditListErrors = FormErrors<EditListProps>;
 
-export function EditShoppingListForm({ listInitialValue, invalidateList, invalidateLists }: MutateListFormProps): JSX.Element {
+export function DeleteShoppingListForm({ listInitialValue, invalidateList, invalidateLists }: MutateListFormProps): JSX.Element {
   const { route } = useLocation();
-  const form = useForm<EditListProps>();
+  const form = useForm();
 
   const {
-    executeRequest: editList,
+    executeRequest: deleteList,
     isLoading: isLoadingEditItem,
     error,
   } = useMutation<List, EditListErrors, EditListProps>({
     url: buildApiURL(`/list/${listInitialValue.id}`),
-    method: 'PATCH',
+    method: 'DELETE',
     onSuccessCallback: () => {
       invalidateLists();
       invalidateList();
@@ -35,29 +35,37 @@ export function EditShoppingListForm({ listInitialValue, invalidateList, invalid
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(editList)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(deleteList)} className="space-y-8">
         <FormField
           control={form.control}
           name="title"
           defaultValue={listInitialValue.title}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nom de l&apos;article</FormLabel>
+              <FormLabel>
+                Cette action est irréversible. Es-tu que tu tu tu turlututu es sur de chez sur ? La liste suivante va être supprimée. Oh non
+                😢
+              </FormLabel>
               <FormControl>
-                <Input placeholder="Le nom de ta liste 🛒🛍️" {...field} />
+                <Input {...field} disabled />
               </FormControl>
               <FormDescription>Tu vas mettre quoi dans tes sacs 🛍️ ?</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button className="font-semibold" type="submit" disabled={isLoadingEditItem.value}>
+        <Button
+          className="text-destructive-foreground font-semibold"
+          type="submit"
+          variant="destructive"
+          disabled={isLoadingEditItem.value}
+        >
           {isLoadingEditItem.value ? (
             <>
               <Loader2 className="animate-spin" /> Attendez
             </>
           ) : (
-            'Modifier'
+            'Supprimer'
           )}
         </Button>
       </form>
