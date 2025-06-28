@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 import { CheckIcon, ChevronRightIcon, CircleIcon } from 'lucide-preact';
 import * as React from 'react';
-
-import { classNameMerger } from 'src/lib/utils';
+import { classNameMerger } from '@/lib/utils';
 
 function DropdownMenu({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
   return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />;
@@ -14,14 +12,15 @@ function DropdownMenuPortal({ ...props }: React.ComponentProps<typeof DropdownMe
 }
 
 function DropdownMenuTrigger({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
-  // @ts-expect-error shadcn types
+  //@ts-expect-error shadcn types not exact
   return <DropdownMenuPrimitive.Trigger data-slot="dropdown-menu-trigger" {...props} />;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 function DropdownMenuContent({ className, sideOffset = 4, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
   return (
     <DropdownMenuPrimitive.Portal>
-      {/* @ts-expect-error shadcn types*/}
+      {/* @ts-expect-error shadcn types not exact */}
       <DropdownMenuPrimitive.Content
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
@@ -36,7 +35,7 @@ function DropdownMenuContent({ className, sideOffset = 4, ...props }: React.Comp
 }
 
 function DropdownMenuGroup({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Group>) {
-  // @ts-expect-error shadcn types
+  //@ts-expect-error shadcn types not exact
   return <DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />;
 }
 
@@ -50,7 +49,7 @@ function DropdownMenuItem({
   variant?: 'default' | 'destructive';
 }) {
   return (
-    // @ts-expect-error shadcn types
+    //@ts-expect-error shadcn types not exact
     <DropdownMenuPrimitive.Item
       data-slot="dropdown-menu-item"
       data-inset={inset}
@@ -71,7 +70,7 @@ function DropdownMenuCheckboxItem({
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>) {
   return (
-    // @ts-expect-error shadcn types
+    //@ts-expect-error shadcn types not exact
     <DropdownMenuPrimitive.CheckboxItem
       data-slot="dropdown-menu-checkbox-item"
       className={classNameMerger(
@@ -92,13 +91,13 @@ function DropdownMenuCheckboxItem({
 }
 
 function DropdownMenuRadioGroup({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.RadioGroup>) {
-  // @ts-expect-error shadcn types
+  //@ts-expect-error shadcn types not exact
   return <DropdownMenuPrimitive.RadioGroup data-slot="dropdown-menu-radio-group" {...props} />;
 }
 
 function DropdownMenuRadioItem({ className, children, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.RadioItem>) {
   return (
-    // @ts-expect-error shadcn types
+    //@ts-expect-error shadcn types not exact
     <DropdownMenuPrimitive.RadioItem
       data-slot="dropdown-menu-radio-item"
       className={classNameMerger(
@@ -125,7 +124,7 @@ function DropdownMenuLabel({
   inset?: boolean;
 }) {
   return (
-    // @ts-expect-error shadcn types
+    //@ts-expect-error shadcn types not exact
     <DropdownMenuPrimitive.Label
       data-slot="dropdown-menu-label"
       data-inset={inset}
@@ -137,7 +136,7 @@ function DropdownMenuLabel({
 
 function DropdownMenuSeparator({ className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
   return (
-    // @ts-expect-error shadcn types
+    //@ts-expect-error shadcn types not exact
     <DropdownMenuPrimitive.Separator
       data-slot="dropdown-menu-separator"
       className={classNameMerger('bg-border -mx-1 my-1 h-px', className)}
@@ -169,7 +168,7 @@ function DropdownMenuSubTrigger({
   inset?: boolean;
 }) {
   return (
-    // @ts-expect-error shadcn types
+    //@ts-expect-error shadcn types not exact
     <DropdownMenuPrimitive.SubTrigger
       data-slot="dropdown-menu-sub-trigger"
       data-inset={inset}
@@ -187,7 +186,7 @@ function DropdownMenuSubTrigger({
 
 function DropdownMenuSubContent({ className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
   return (
-    // @ts-expect-error shadcn types
+    //@ts-expect-error shadcn types not exact
     <DropdownMenuPrimitive.SubContent
       data-slot="dropdown-menu-sub-content"
       className={classNameMerger(

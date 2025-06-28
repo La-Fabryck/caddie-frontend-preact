@@ -4,7 +4,7 @@ import { classNameMerger } from '@/lib/utils';
 
 function Label({ className, ...props }: ComponentProps<typeof LabelPrimitive.Root>) {
   return (
-    // @ts-expect-error shadcn types
+    //@ts-expect-error shadcn types not exact
     <LabelPrimitive.Root
       data-slot="label"
       className={classNameMerger(
