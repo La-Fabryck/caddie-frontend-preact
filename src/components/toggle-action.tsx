@@ -10,6 +10,9 @@ function ToggleActionGroup({ action }: ToggleActionProperties) {
     <ToggleGroup
       type="single"
       variant="outline"
+      //TODO: Class name
+      // className="bg-destructive"
+      className="w-full"
       value={action.value}
       size="lg"
       onValueChange={(value: Action) => {
@@ -18,13 +21,13 @@ function ToggleActionGroup({ action }: ToggleActionProperties) {
         }
       }}
     >
-      <ToggleGroupItem className="flex-1" value="selection" aria-label="selection">
+      <ToggleGroupItem value="selection" aria-label="selection">
         <SquareCheckBig />
       </ToggleGroupItem>
-      <ToggleGroupItem className="flex-1" value="edition" aria-label="edition">
+      <ToggleGroupItem value="edition" aria-label="edition">
         <SquarePen />
       </ToggleGroupItem>
-      <ToggleGroupItem className="flex-1" value="deletion" aria-label="deletion">
+      <ToggleGroupItem value="deletion" aria-label="deletion">
         <Trash />
       </ToggleGroupItem>
     </ToggleGroup>

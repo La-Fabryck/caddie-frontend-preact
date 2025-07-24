@@ -1,6 +1,6 @@
 # v0 Bare minimum
 
-- Account creation
+- ~~Account creation~~
 - ~~Display the list (Basics done)~~
 - ~~Handle form errors~~
 - ~~Create a list~~
@@ -12,17 +12,21 @@
 
 - useFetch :
   - ~~Refactor useFetch (useFetch & useMutation)~~
+  - Find a solution for Delete (useFetch / useMutation)
   - Abort Controller
     - https://www.cluemediator.com/how-to-cancel-a-fetch-request-in-react
     - https://developer.mozilla.org/en-US/docs/Web/API/AbortController
   - ~~use [Request](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#creating_a_request_object)~~
   - useFetch event to refresh when switching back to page
 - List:
-  - edit a list
+  - ~~edit~~
+  - ~~remove~~
   - list flag (active/inactive)
   - order: 
     - ~~Sby updated at~~
 - Items:
+  - ~~edit~~
+  - ~~remove~~
   - item type
   - quantity of items
 - Subscription :

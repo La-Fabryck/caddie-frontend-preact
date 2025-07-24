@@ -40,7 +40,7 @@ export function EditItemForm({ invalidateItems, invalidateItem, itemInitialValue
     executeRequest: editItem,
     isLoading: isLoadingEditItem,
     error,
-  } = useMutation<Item, EditItemErrors, CreateItem>({
+  } = useMutation<Item, EditItemErrors, EditItemProps>({
     url: buildApiURL(`/list/${itemInitialValue.listId}/items/${itemInitialValue.id}`),
     method: 'PATCH',
     onSuccessCallback: () => {

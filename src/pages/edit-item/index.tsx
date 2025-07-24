@@ -31,7 +31,9 @@ export function EditItem(): JSX.Element {
 
   return (
     <>
-      <h1>Modifier l&apos;article {item.value?.name}</h1>
+      <div className="mx-auto my-5 max-w-2xl lg:mx-0">
+        <h2 className="mb-2 text-4xl font-semibold tracking-tight sm:text-5xl">Modifier l&apos;article {item.value?.name}</h2>
+      </div>
       <EditItemForm invalidateItems={invalidateItems} invalidateItem={invalidateItem} itemInitialValue={item.value} />
     </>
   );

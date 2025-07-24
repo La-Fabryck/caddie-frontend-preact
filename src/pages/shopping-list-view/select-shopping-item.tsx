@@ -5,12 +5,12 @@ import { useMutation } from '@/hooks';
 import { type Item } from '@/responses';
 import { ItemCheckbox } from './item-checkbox';
 
-type ShoppingItemSelectionType = {
+type SelectShoppingItemType = {
   item: Item;
   invalidateItems: () => void;
 };
 
-export function ShoppingItemSelection({ item: itemInitialValue, invalidateItems }: ShoppingItemSelectionType): JSX.Element {
+export function SelectShoppingItem({ item: itemInitialValue, invalidateItems }: SelectShoppingItemType): JSX.Element {
   const item = useSignal(itemInitialValue);
   const { executeRequest: updateIsInCart, data: updatedItem } = useMutation<Item, null, Pick<Item, 'isInCart'>>({
     method: 'PATCH',

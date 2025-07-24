@@ -5,11 +5,11 @@ import { type Item } from '@/responses';
 import { ListItem } from './list-item';
 import { ShoppingListWrapper } from './shopping-list-wrapper';
 
-type ShoppingListEditionProps = {
+type ShoppingListEditModeProps = {
   items: Signal<Item[] | null>;
 };
 
-export function ShoppingListEdition({ items }: ShoppingListEditionProps): JSX.Element {
+export function ShoppingListEditMode({ items }: ShoppingListEditModeProps): JSX.Element {
   return (
     <>
       <ShoppingListWrapper items={items}>

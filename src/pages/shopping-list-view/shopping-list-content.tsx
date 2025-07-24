@@ -1,5 +1,5 @@
 import { effect, type Signal } from '@preact/signals';
-import { DiamondPlus } from 'lucide-preact';
+import { Plus } from 'lucide-preact';
 import { type JSX } from 'preact';
 import { useLocation } from 'preact-iso';
 import { type Action, Loader } from '@/components';
@@ -7,9 +7,9 @@ import { buttonVariants } from '@/components/ui';
 import { buildApiURL, createItemsKey } from '@/helpers';
 import { useQuery } from '@/hooks';
 import { type Item } from '@/responses';
-import { ShoppingListDeletion } from './shopping-list-deletion';
-import { ShoppingListEdition } from './shopping-list-edition';
-import { ShoppingListSelection } from './shopping-list-selection';
+import { ShoppingListDeleteMode } from './shopping-list-delete-mode';
+import { ShoppingListEditMode } from './shopping-list-edit-mode';
+import { ShoppingListSelectMode } from './shopping-list-select-mode';
 
 type ShoppingListContentProps = {
   shoppingListId: string;
@@ -43,20 +43,20 @@ export function ShoppingListContent({ action, shoppingListId }: ShoppingListCont
       return (
         <>
           <a
-            className={buttonVariants({ variant: 'default', size: 'lg', className: 'font-semibold' })}
+            className={`${buttonVariants({ variant: 'default', size: 'lg', className: 'font-semibold' })}, mb-3`}
             href={`/list/${shoppingListId}/items/add`}
           >
-            <DiamondPlus />
+            <Plus />
             Ajoute un article
           </a>
-          <ShoppingListSelection items={items} invalidate={invalidateItems} />
+          <ShoppingListSelectMode items={items} invalidate={invalidateItems} />
         </>
       );
 
     case 'edition':
-      return <ShoppingListEdition items={items} />;
+      return <ShoppingListEditMode items={items} />;
     case 'deletion':
-      return <ShoppingListDeletion items={items} invalidate={invalidateItems} action={action} />;
+      return <ShoppingListDeleteMode items={items} invalidate={invalidateItems} action={action} />;
     default:
       throw new Error('Invalid action');
   }
