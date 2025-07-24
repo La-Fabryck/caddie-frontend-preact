@@ -26,7 +26,7 @@ export function DeleteShoppingListForm({ listInitialValue, invalidateList, inval
     onSuccessCallback: () => {
       invalidateLists();
       invalidateList();
-      route(`/list/${listInitialValue.id}`, false);
+      route('/', false);
     },
     onErrorCallback: () => {
       feedServerErrorsToForm(form.setError, error, listErrorMessages);
