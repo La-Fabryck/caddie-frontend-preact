@@ -6,6 +6,7 @@ import { useQuery } from '@/hooks';
 import { type List } from '@/responses';
 import { EditShoppingListForm } from './edit-shopping-list-form';
 
+//TODO: Refacto avec shopping-list-delete
 export function EditShoppingList(): JSX.Element {
   const {
     params: { shoppingListId },
