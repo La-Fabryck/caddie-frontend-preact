@@ -12,7 +12,11 @@ type ShoppingItemsProps = {
 export function ShoppingListSelectMode({ items, invalidate }: ShoppingItemsProps): JSX.Element {
   return (
     <ShoppingListWrapper items={items}>
-      <>{items.value?.map((item) => <SelectShoppingItem item={item} key={item.id} invalidateItems={invalidate} />)}</>
+      <>
+        {items.value?.map((item) => (
+          <SelectShoppingItem item={item} key={item.id} invalidateItems={invalidate} />
+        ))}
+      </>
     </ShoppingListWrapper>
   );
 }

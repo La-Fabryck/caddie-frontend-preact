@@ -48,12 +48,17 @@ function ShoppingListDeleteMode({ items, invalidate, action }: ShoppingListDelet
         variant={'destructive'}
         disabled={itemsToDelete.value.length === 0}
         onClick={async () => onClick(itemsToDelete.value)}
+        size="lg"
       >
         <Trash2 />
         {computeDeletionButtonText(itemsToDelete.value.length)}
       </Button>
       <ShoppingListWrapper items={items}>
-        <>{items.value?.map((item) => <DeleteShoppingItem item={item} key={item.id} itemsToDelete={itemsToDelete} />)}</>
+        <>
+          {items.value?.map((item) => (
+            <DeleteShoppingItem item={item} key={item.id} itemsToDelete={itemsToDelete} />
+          ))}
+        </>
       </ShoppingListWrapper>
     </>
   );

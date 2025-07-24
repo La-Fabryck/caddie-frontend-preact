@@ -1,7 +1,7 @@
 const DEFAULT_DELAY = 500;
 
 export function debounce<F extends (...args: never[]) => Promise<void>>(func: F, delay = DEFAULT_DELAY) {
-  let timeout: NodeJS.Timeout;
+  let timeout: ReturnType<typeof setTimeout>;
 
   return function (this: ThisParameterType<F>, ...args: Parameters<F>) {
     clearTimeout(timeout);

@@ -43,7 +43,7 @@ export function ShoppingListContent({ action, shoppingListId }: ShoppingListCont
       return (
         <>
           <a
-            className={`${buttonVariants({ variant: 'default', size: 'lg', className: 'font-semibold' })}, mb-3`}
+            className={`${buttonVariants({ variant: 'default', size: 'lg', className: 'mb-3 font-semibold' })}`}
             href={`/list/${shoppingListId}/items/add`}
           >
             <Plus />
