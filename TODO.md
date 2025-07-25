@@ -22,6 +22,7 @@
   - ~~edit~~
   - ~~remove~~
   - list flag (active/inactive)
+  - fix: clean cache after creating a list
   - order: 
     - ~~Sby updated at~~
 - Items:
