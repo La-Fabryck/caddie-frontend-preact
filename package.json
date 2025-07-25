@@ -1,6 +1,6 @@
 {
   "name": "caddie-frontend-preact",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Frontend for shopping app built with Preact, shadcn, React Hook Form and Tailwind CSS",
   "author": "Benjamin Fabry",
   "private": false,
