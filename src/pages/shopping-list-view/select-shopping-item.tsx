@@ -1,5 +1,5 @@
 import { useSignal } from '@preact/signals';
-import { type JSX } from 'preact';
+import { type JSX, type TargetedEvent } from 'preact';
 import { buildApiURL, debounce } from '@/helpers';
 import { useMutation } from '@/hooks';
 import { type Item } from '@/responses';
@@ -31,7 +31,7 @@ export function SelectShoppingItem({ item: itemInitialValue, invalidateItems }: 
     }
   });
 
-  function handleOnChange(event: JSX.TargetedEvent<HTMLInputElement, Event>, initValue: Item): void {
+  function handleOnChange(event: TargetedEvent<HTMLInputElement, Event>, initValue: Item): void {
     const isChecked = event.currentTarget.checked;
 
     // Call the debounced function
