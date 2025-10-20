@@ -1,7 +1,6 @@
 services:
   frontend:
     image: node:24-alpine
-    restart: unless-stopped
     volumes:
       - '.:/app'
     ports:
@@ -9,6 +8,7 @@ services:
     environment:
       - NODE_ENV=development
     command: [ 'npm', 'run', 'dev' ]
+    user: "${UID:-1000}:${GID:-1000}"
     env_file:
       - .env
     working_dir: /app
