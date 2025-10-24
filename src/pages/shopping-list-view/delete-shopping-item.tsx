@@ -1,4 +1,4 @@
-import { type JSX } from 'preact';
+import { type JSX, type TargetedEvent } from 'preact';
 import { buildApiURL } from '@/helpers';
 import { useMutation } from '@/hooks';
 import { type Item } from '@/responses';
@@ -20,7 +20,7 @@ export function DeleteShoppingItem({ item, itemsToDelete }: DeleteShoppingItem):
     onErrorCallback: () => {},
   });
 
-  function handleOnChange(event: JSX.TargetedEvent<HTMLInputElement, Event>) {
+  function handleOnChange(event: TargetedEvent<HTMLInputElement, Event>) {
     const isChecked = event.currentTarget.checked;
     if (isChecked) {
       itemsToDelete.value = [...itemsToDelete.value, [item.id, async () => deleteItem(null)]];
