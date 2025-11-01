@@ -1,10 +1,10 @@
-import { type JSX } from 'preact';
+import { type GenericEventHandler } from 'preact';
 import { type Item } from '@/responses';
 import { ListItem } from './list-item';
 
 type ItemCheckboxType = {
   item: Item;
-  onChange: JSX.GenericEventHandler<HTMLInputElement>;
+  onChange: GenericEventHandler<HTMLInputElement>;
   isChecked: boolean;
 };
 
